@@ -1,0 +1,8 @@
+*.log
+*.env
+*tmp_data/*
+server/data/*
+server/store/*.xml
+*.sqlite3
+venv
+/venv/
