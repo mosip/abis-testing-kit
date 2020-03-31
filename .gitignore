@@ -1,0 +1,11 @@
+*.log
+*.env
+*tmp_data/*
+/src/data/*
+/src/store/*.xml
+*.sqlite3
+/venv
+/src/store/*
+/src/result/
+/src/orchestrator/temp_data/*
+/src/job_data/*

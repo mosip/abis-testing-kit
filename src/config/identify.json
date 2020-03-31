@@ -1,0 +1,13 @@
+{
+    "id" : "mosip.abis.identify",
+    "ver" : "1.0",
+    "requestId" : "${requestId}",
+    "timestamp" : "${timestamp}",
+    "referenceId" : "${referenceId}",
+    "referenceURL" : "${referenceURL}",
+    "maxResults" : "${maxResults}",
+    "targetFPIR" : "${targetFPIR}",
+    "gallery" : {
+
+    }
+}

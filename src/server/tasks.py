@@ -1,0 +1,47 @@
+from config.settings import Queue
+from orchestrator import consume
+from testsuite.models import RequestMap, Tests, Logs
+from testsuite.utils import Orchestrator
+import traceback
+
+
+def get_response_from_queue():
+    print("get_response_from_queue: started")
+    try:
+        status, body = consume(Queue.consume_address, Queue.client_id)
+        if status is True:
+            request_id = body['requestId']
+            request_map = RequestMap.objects.filter(request_id=request_id).first()
+            if request_map is None:
+                new_record = RequestMap(request_id=request_id, response=body)
+                new_record.save()
+            print("status: " + str(status))
+            print("body: " + str(body))
+            print("get_response_from_queue: ended")
+            return True
+        else:
+            return None
+    except Exception as e:
+        print("OS error: {0}".format(e))
+        return False
+
+
+def run_orchestrator():
+    print("get_response_from_queue: started")
+    run_id = None;
+    try:
+        test = Tests.objects.all().first()
+        if test is not None and test.status not in ['completed', 'error']:
+            run_id = test.run_id
+            Orchestrator(test.run_id, test.run_type).run()
+            Tests.objects.filter(run_id=test.run_id).update(status='completed')
+            Logs(run_id=run_id, log="Run completed").save()
+            return True
+        else:
+            return None
+    except Exception as e:
+        Tests.objects.filter(run_id=run_id).update(status='error', msg='e')
+        Logs(run_id=run_id, log="Error occured: "+str(e)).save()
+        print(e)
+        print(traceback.print_tb(e.__traceback__))
+        return False

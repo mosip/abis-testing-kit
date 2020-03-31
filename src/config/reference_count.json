@@ -1,0 +1,6 @@
+{
+    "id" : "mosip.abis.referenceCount",
+    "ver" : "1.0",
+    "requestId" : "${requestId}",
+    "timestamp" : "${timestamp}"
+}
