@@ -1,22 +1,25 @@
+import json
 import os
 import logging
+import random
+import string
 import uuid
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
+from django.shortcuts import render
 from django.views.generic.base import View
 from drf_yasg.utils import swagger_auto_schema
-
-from .utils import produce, consume, parse_biometric_file
-from abis_apis.lib import insert as insert_request
+from django.forms.models import model_to_dict
+from .utils import parse_biometric_file, Orchestrator
+from abis_apis import prepare_insert_request
 from cbeff import create as create_cbeff
-from .models import TestCase
-from config.settings import AppConfig
+from .models import Tests, RequestMap, Logs
 
 logger = logging.getLogger("server.custom")
 
 
 def index(request):
-    return HttpResponse('App is running.')
+    return render(request, 'testsuite/index.html')
 
 
 class Generate(View):
@@ -60,70 +63,66 @@ class Generate(View):
             return JsonResponse({"status": False, "msg": "data directory not found"})
 
 
-class Clear(View):
-    @swagger_auto_schema(operation_description="description")
-    def post(self, request, *args, **kwargs):
-        abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
-        if os.path.exists(abs_store_path):
-            for item in os.listdir(abs_store_path):
-                if item.endswith(".xml"):
-                    os.remove(os.path.join(abs_store_path, item))
-        return JsonResponse({"status": True, "msg": "All generated cbeff files have been removed"})
-
-
-class RunTest(View):
+class StartRun(View):
 
     def post(self, request, *args, **kwargs):
-        tests_count = 0
-        """ Removing previous data """
-        TestCase.objects.all().delete()
+        run_id = request.POST['run_name'] if request.POST['run_name'] else ''.join(random.choice(string.ascii_lowercase) for i in range(10))
+        run_type = "sync" if request.POST['run_type'] == "sync" else "async"
 
-        """ Fetching the data """
-        abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
-        if os.path.exists(abs_store_path):
-            for filename in os.listdir(abs_store_path):
-                if filename.endswith(".xml"):
-                    request_id = uuid.uuid1().hex
-                    reference_id = str(filename.split('_')[0])
-                    test_case_id = uuid.uuid1().hex
-                    request = insert_request(request_id, reference_id, AppConfig.callback_url)
-                    """ Saving to database """
-                    tc = TestCase(request_id=request_id, reference_id=reference_id, test_case_id=test_case_id)
-                    tc.save()
-                    logger.info(
-                        "request_id=" + request_id + ", reference_id=" + reference_id + ", test_case_id=" + test_case_id + " saved to db")
-                    """ Sending to queue """
-                    status, body = produce(request)
-                    if status:
-                        tests_count = tests_count + 1
-                        logger.info(body)
-                        logger.info(
-                            "request_id=" + request_id + ", reference_id=" + reference_id + ", test_case_id=" + test_case_id + " sent to queue")
-                    else:
-                        logger.info(body)
-                        return JsonResponse(
-                            {"status": False, "msg": "Unable to add to queue"})
-        return JsonResponse({"status": True, "msg": str(tests_count) + " tests successfully initiated."})
+        """ removing previous data """
+        abs_result_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result'))
+        if os.path.exists(abs_result_path):
+            for item in os.listdir(abs_result_path):
+                os.remove(os.path.join(abs_result_path, item))
+        Tests.objects.all().delete()
+        RequestMap.objects.all().delete()
+        Logs.objects.all().delete()
+        td = Tests(run_id=run_id, run_type=run_type, status='created')
+        td.save()
+        Logs(run_id=run_id, log="Run name: "+run_id+" entry has been created. Waiting for job to process it.").save()
+        return JsonResponse({"status": True, "msg": model_to_dict(td)})
+
+    def get(self, request, run_id):
+        abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result/'+run_id+'.json'))
+        logger.info("get test abs file path: " + abs_file_path)
+        if os.path.isfile(abs_file_path):
+            try:
+                with open(abs_file_path, 'r') as f:
+                    file_data = f.read()
+                file_data = json.loads(file_data)
+                return JsonResponse(file_data, json_dumps_params={'indent': 2}, safe=False)
+            except IOError:
+                response = HttpResponseNotFound('<h1>File not exist</h1>')
+                return response
+        return HttpResponseNotFound('<h1>Test result does not exist</h1>')
 
 
-class InsertEntry(View):
+class CancelRun(View):
 
     def post(self, request, *args, **kwargs):
-        data = insert_request("32323", "dsdsdsf", "dsdsdsfsfsfsfsf")
-        d = produce(data)
-        return HttpResponse(d)
+        """ removing previous data """
+        abs_result_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result'))
+        if os.path.exists(abs_result_path):
+            for item in os.listdir(abs_result_path):
+                os.remove(os.path.join(abs_result_path, item))
+        Tests.objects.all().delete()
+        RequestMap.objects.all().delete()
+        Logs.objects.all().delete()
+        return JsonResponse({"status": True, "msg": "Run successfully canceled"})
 
 
-class GetEntry(View):
+class RunStatus(View):
 
-    def get(self, request, *args, **kwargs):
-        status, body = consume()
-        if status:
-            logger.info(body)
+    def post(self, request):
+        test = Tests.objects.all().first()
+        if test is not None:
+            logs = list(Logs.objects.filter(run_id=test.run_id).values("run_id", "log"))
         else:
-            logger.info(body)
-            return JsonResponse({"status": False, "msg": body})
-        return JsonResponse({"status": True, "msg": body})
+            logs = []
+        if test is None:
+            return JsonResponse({"status": True, "msg": False})
+        else:
+            return JsonResponse({"status": True, "msg": model_to_dict(test), "logs": logs})
 
 
 class GetCbeff(View):
@@ -132,7 +131,7 @@ class GetCbeff(View):
         abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
         if os.path.exists(abs_store_path):
             for filename in os.listdir(abs_store_path):
-                if filename.endswith(".xml") and filename.split('_')[0] == reference_id:
+                if filename == reference_id+'.xml':
                     abs_file_path = os.path.join(abs_store_path, filename)
                     try:
                         with open(abs_file_path, 'r') as f:

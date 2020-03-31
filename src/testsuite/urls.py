@@ -14,14 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include, re_path
-from .views import index, Generate, GetEntry, InsertEntry, Clear, RunTest, GetCbeff
+from .views import index, Generate, StartRun, CancelRun, GetCbeff, RunStatus
 
 
 urlpatterns = [
-    re_path(r'^test\W?$', RunTest.as_view()),
+    path('', index),
+    re_path(r'^test\W?$', StartRun.as_view()),
     re_path(r'^generate\W?$', Generate.as_view()),
-    re_path(r'^clear\W?$', Clear.as_view()),
-    re_path(r'^produce\W?$', InsertEntry.as_view()),
-    re_path(r'^consume\W?$', GetEntry.as_view()),
+    re_path(r'^cancel\W?$', CancelRun.as_view()),
+    re_path(r'^status\W?$', RunStatus.as_view()),
+    # re_path(r'^produce\W?$', InsertEntry.as_view()),
+    # re_path(r'^consume\W?$', GetEntry.as_view()),
+    path('test_info/<str:run_id>', StartRun.as_view()),
     path('get_cbeff/<str:reference_id>', GetCbeff.as_view())
 ]
