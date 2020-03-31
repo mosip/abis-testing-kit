@@ -1,0 +1,7 @@
+{
+    "id" : "mosip.abis.delete",
+    "ver" : "1.0",
+    "requestId" : "${requestId}",
+    "timestamp" : "${timestamp}",
+    "referenceId" : "${referenceId}"
+}

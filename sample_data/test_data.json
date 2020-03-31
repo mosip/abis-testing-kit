@@ -1,0 +1,17 @@
+[
+  {
+    "name": "person1",
+    "reference_id": "r1",
+    "referenceUrl": "${callbackURL}/asa"
+  },
+  {
+    "name": "person2",
+    "reference_id": "r2",
+    "referenceUrl": "${callbackURL}/asa2"
+  },
+  {
+    "name": "person3",
+    "reference_id": "r3",
+    "referenceUrl": "${callbackURL}/asa3"
+  }
+]

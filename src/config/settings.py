@@ -30,13 +30,18 @@ class CBEFFConfig:
 
 class Queue:
     """ Queue related config """
-    host = os.getenv("atk.queue.host")  # default 'http://localhost:8161/'
+    host = os.getenv("atk.queue.host")  # default 'http://localhost'
+    port = os.getenv("atk.queue.port")  # default '8161'
     user = os.getenv("atk.queue.user")  # default 'admin'
     password = os.getenv("atk.queue.password")  # 'admin'
-    name = os.getenv("atk.queue.name")  # 'TEST'
+    send_address = os.getenv("atk.queue.send_address")  # 'm2a'
+    consume_address = os.getenv("atk.queue.consume_address")  # 'a2m'
     client_id = os.getenv("atk.queue.client_id")  # 'any string'
 
 
 class AppConfig:
     """ App config """
     callback_url = os.getenv("atk.app.callback_url")  # default 'http://localhost:8000/'
+    abis_host = os.getenv("atk.app.abis_host")
+    abis_max_results = os.getenv("atk.app.abis_max_results")  # default 30
+    abis_target_fpir = os.getenv("atk.app.abis_target_fpir")  # default 30

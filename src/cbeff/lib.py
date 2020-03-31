@@ -2,10 +2,10 @@
 This utility provides helper functions related to cbeff.
 Check the docs to know the final cbeff xml format
 """
-from src.cbeff import Biometrics
+from cbeff import Biometrics
 import xml.etree.ElementTree as ET
 from typing import List, AnyStr
-from src.config import CBEFFConfig
+from config import CBEFFConfig
 import datetime
 import os
 import string

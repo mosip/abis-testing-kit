@@ -1,13 +1,12 @@
 import unittest
-from src.config import CBEFFConfig
-from typing import List, AnyStr
+from typing import List
 
 
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
         list_of_biometrics: List = []
-        from src.cbeff import Biometrics, create
+        from ..cbeff import Biometrics, create
         b1: Biometrics = Biometrics('IRIS', 'Left Eye', 'fdfdfdfdgdg')
         list_of_biometrics.append(b1)
         create(list_of_biometrics, './tmp_data/test1.xml')
