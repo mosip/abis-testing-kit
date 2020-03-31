@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ABIS testing kit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* Loader 6 */
+        .loader-6 {
+            height: 72px;
+            width: 72px;
+        }
+        .loader-6 span {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+            height: 72px;
+            width: 72px;
+        }
+        .loader-6 span::before,
+        .loader-6 span::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+            height: 72px;
+            width: 72px;
+            border: 2px solid #4371F0;
+            border-radius: 50%;
+            opacity: 0;
+            -webkit-animation: loader-6-1 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) infinite;
+                    animation: loader-6-1 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) infinite;
+        }
+        @-webkit-keyframes loader-6-1 {
+            0%   { -webkit-transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { -webkit-transform: translate3d(0, 0, 0) scale(1.5); opacity: 0; }
+        }
+        @keyframes loader-6-1 {
+            0%   { transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { transform: translate3d(0, 0, 0) scale(1.5); opacity: 0; }
+        }
+        .loader-6 span::after {
+            -webkit-animation: loader-6-2 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) .25s infinite;
+                    animation: loader-6-2 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) .25s infinite;
+        }
+        @-webkit-keyframes loader-6-2 {
+            0%   { -webkit-transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { -webkit-transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+        }
+        @keyframes loader-6-2 {
+            0%   { transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+        }
+        .center {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row pt-2 pb-2">
+            <form class="run_rel d-none m-auto">
+                <div class="row">
+                    <div class="col">
+                        <input id="runName" type="text" class="form-control" placeholder="Run name">
+                    </div>
+                    <div class="col">
+                        <select id="runType" class="form-control">
+                            <option selected>Run type</option>
+                            <option>sync</option>
+                            <option>async</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary btn-lg m-auto" onclick="startRun()">Run</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="col-md-12 cancel_rel d-none">
+                <div class="row" style="margin-bottom: 120px">
+                    <button type="button" class="btn btn-danger btn-lg m-auto" onclick="cancelRun()">Cancel</button>
+                </div>
+                <div class="row" style="position:relative">
+                    <div id="loader" class="loader-6 center">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 140px">
+                    <div class="alert alert-info m-auto w-100" role="alert">
+                        <h4 class="statusBar alert-heading"></h4>
+                        <p class="msgBar"></p>
+                        <ul class="runLogs">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 re_run_rel d-none">
+                <div class="row" style="margin-bottom: 120px">
+                    <button type="button" class="btn btn-primary btn-lg m-auto" onclick="cancelRun()">Re-run</button>
+                    <button type="button" class="btn btn-secondary btn-lg m-auto" onclick="openTest()">View result</button>
+                </div>
+                <div class="row" style="margin-top: 140px">
+                    <div class="alert alert-info w-100" role="alert">
+                        <h4 class="statusBar alert-heading"></h4>
+                        <p class="msgBar"></p>
+                        <ul class="runLogs">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    let host = 'http://localhost:8000/';
+    let timer = null;
+    let run_name = null;
+    function startRun(){
+        run_name = $('#runName').val();
+        let run_type = $('#runType').val();
+        $.ajax({
+            url: host+"test",
+            type: "POST",
+            data: {'run_name': run_name, 'run_type': run_type},
+            success: function(body){
+                if(body.status){
+                    getStatus();
+                    startStatusTimer()
+                }else{
+                    alert(body.msg)
+                }
+            }
+        });
+    }
+
+    function cancelRun(){
+        $.ajax({
+            url: host+"cancel",
+            type: "POST",
+            success: function(body){
+                if(body.status){
+                    changeState('run')
+                }else{
+                    alert(body.msg)
+                }
+            }
+        });
+    }
+
+    function getStatus(){
+        $.ajax({
+            url: host+"status",
+            type: "POST",
+            success: function(body){
+                if(body.status){
+                    if(body.msg){
+                        run_name = body.msg.run_id;
+                        updateStatus(body.msg.status, body.logs);
+                        if(['completed', 'error'].indexOf(body.msg.status) == -1){
+                            changeState('cancel');
+                        } else {
+                            changeState('re_run');
+                        }
+                        startStatusTimer()
+                    }else{
+                        changeState('run')
+                    }
+                }else{
+                    alert(body.msg)
+                }
+            }
+        });
+    }
+
+    function openTest(){
+        window.open(host+'test_info/'+run_name)
+    }
+
+    function clearTests(){
+        $.ajax({
+            url: host+"clear",
+            type: "POST",
+            success: function(){
+                window.location.reload();
+            }
+        });
+    }
+    function changeState(v){
+        if(v == 're_run'){
+            $('.run_rel').addClass('d-none');
+            $('.cancel_rel').addClass('d-none');
+            $('.re_run_rel').removeClass('d-none');
+        }else if(v == 'cancel'){
+            $('.run_rel').addClass('d-none');
+            $('.cancel_rel').removeClass('d-none');
+            $('.re_run_rel').addClass('d-none');
+        }else{
+            $('.run_rel').removeClass('d-none');
+            $('.cancel_rel').addClass('d-none');
+            $('.re_run_rel').addClass('d-none');
+        }
+    }
+
+    function updateStatus(status, logs){
+        $('.statusBar').html('Status: '+status);
+        let li = "";
+        if(logs){
+            for(let i=0;i<logs.length;i++){
+                li += "<li>"+logs[i]['log']+"</li>";
+            }
+        }
+        $('.runLogs').html(li);
+    }
+
+    function startStatusTimer(){
+        if(timer){
+            clearInterval(timer);
+        }
+        timer = setInterval(function(){
+            getStatus()
+        }, 4000)
+    }
+    getStatus()
+</script>
+</html>
