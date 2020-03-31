@@ -7,10 +7,10 @@ from django.views.generic.base import View
 from drf_yasg.utils import swagger_auto_schema
 
 from .utils import produce, consume, parse_biometric_file
-from src.abis_apis.lib import insert as insert_request
-from src.cbeff import create as create_cbeff
-from testsuite.models import TestCase
-from src.config.settings import AppConfig
+from abis_apis.lib import insert as insert_request
+from cbeff import create as create_cbeff
+from .models import TestCase
+from config.settings import AppConfig
 
 logger = logging.getLogger("server.custom")
 

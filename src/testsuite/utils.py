@@ -1,8 +1,8 @@
 import requests
 import base64
 from requests.auth import HTTPBasicAuth
-from src.config.settings import CBEFFConfig, Queue
-from src.cbeff import Biometrics
+from config.settings import CBEFFConfig, Queue
+from cbeff import Biometrics
 
 
 def produce(msg):
