@@ -23,6 +23,7 @@ subparsers.add_parser('image', help='Create image')
 subparsers.add_parser('rmimage', help='Remove image')
 subparsers.add_parser('container', help='Create and start container')
 subparsers.add_parser('rmcontainer', help='Remove container')
+subparsers.add_parser('logs', help='Get logs')
 args = parser.parse_args()
 print(args)
 
@@ -117,6 +118,21 @@ def remove_image():
         exit(1)
 
 
+def logs():
+    try:
+        ds = subprocess.Popen(['sudo', 'docker', 'logs', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        logging.error(ds.stderr)
+        while True:
+            output = ds.stdout.readline()
+            if output == b'' and ds.poll() is not None:
+                break
+            if output:
+                logging.info(output.strip())
+    except subprocess.CalledProcessError as e:
+        logging.error(e.output)
+        exit(1)
+
+
 def setup():
     build_image()
     create_container()
@@ -143,3 +159,5 @@ elif args.mode == 'container':
 elif args.mode == 'rmcontainer':
     stop_container()
     remove_container()
+elif args.mode == 'logs':
+    logs()

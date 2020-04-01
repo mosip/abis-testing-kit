@@ -15,7 +15,7 @@ list_descendants ()
 }
 
 cd /opt/abis-testing-kit/src
-python3 manage.py runserver 0.0.0.0:8000 --no-reload &
+python3 manage.py runserver 0.0.0.0:8000 --noreload &
 P1=$!
 
 python3 orchestration_job.py &
