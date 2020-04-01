@@ -11,6 +11,10 @@ Provides a test framework for testing ABIS
 * remove all containers: sudo docker rm -f $(sudo docker ps -a -q)
 * run django inside container: python3 manage.py runserver 0.0.0.0:8000 --noreload
 
+* sudo docker build -t abis-testing-kit-test . -f Dockerfile-test
+* sudo docker run -d -it --hostname=localhost --name abis-testing-test -p 8000:8000 --log-driver json-file abis-testing-kit-test
+* sudo docker exec -it abis-testing-test bash
+
 **Contents**
 * [Design diagram](./docs/images/ABIS-kit%20diagram.jpg)
 * [ABIS APIs](./docs/apis.md)
