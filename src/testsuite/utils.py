@@ -39,8 +39,6 @@ class Orchestrator:
     def run(self):
         Tests.objects.filter(run_id=self.run_id).update(status="in-progress")
         Logs(run_id=self.run_id, log="Run: "+self.run_id+" is in progress").save()
-        request_ids = []
-        responses = []
         print("Run id: " + self.run_id)
         log_abs_path = os.path.abspath(
             os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result', self.run_id + '.json'))
@@ -66,6 +64,7 @@ class Orchestrator:
 
         for ptc in parsed_test_cases:
             Logs(run_id=self.run_id, log="Test: "+ptc['testId']+" is running.").save()
+            request_ids = []
             ptc['runId'] = self.run_id
             for idx, val in enumerate(ptc['steps']):
                 st = ptc['steps'][idx]

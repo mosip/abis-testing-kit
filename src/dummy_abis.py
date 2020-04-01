@@ -18,6 +18,7 @@ def run_job():
             status, body = consume(Queue.send_address, 'dummy_abis')
             if status is True:
                 print("Message found")
+                print(str(body))
                 res_id = body['id']
                 request_id = body['requestId']
                 response = {
