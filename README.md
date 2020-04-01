@@ -13,7 +13,7 @@ Provides a test framework for testing ABIS
 
 * sudo docker build -t abis-testing-kit-test . -f Dockerfile-test
 * sudo docker run -d -it --hostname=localhost --name abis-testing-test -p 8000:8000 --log-driver json-file abis-testing-kit-test
-* sudo docker exec -it abis-testing-test bash
+* sudo docker exec -it abis-testing-kit bash
 
 **Contents**
 * [Design diagram](./docs/images/ABIS-kit%20diagram.jpg)
