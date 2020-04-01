@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN apt-get update \
-    && apt-get -y install curl wget git python3 python3-pip default-jdk \
+    && apt-get -y install curl wget git bash python3 python3-pip default-jdk \
     && cd /opt \
     && wget http://apachemirror.wuchna.com//activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz \
     && tar zxf apache-activemq-5.15.12-bin.tar.gz \
@@ -17,4 +17,5 @@ COPY .env /opt/abis-testing-kit/.env
 COPY sample_data/ /opt/abis-testing-kit/src/store/
 EXPOSE 8000
 
-CMD ./opt/abis-testing-kit/run.sh
+ENTRYPOINT ["/opt/abis-testing-kit/run.sh"]
+CMD ["run"]

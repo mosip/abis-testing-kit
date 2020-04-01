@@ -64,7 +64,6 @@ while sleep 5; do
   if ps -p $P5 >/dev/null; then
       echo $P5"Process"
   else
-      echo "activemq crashed" >> ./../process.log
-      kill "$PIDs" "$$"
+      /opt/activemq/bin/activemq status
   fi
 done
