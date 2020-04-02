@@ -45,3 +45,4 @@ class AppConfig:
     abis_host = os.getenv("atk.app.abis_host")
     abis_max_results = os.getenv("atk.app.abis_max_results")  # default 30
     abis_target_fpir = os.getenv("atk.app.abis_target_fpir")  # default 30
+    abis_response_timeout = os.getenv("atk.app.abis.response.timeout")  # timeout for the step to wait for abis response should be atleast greater than 30

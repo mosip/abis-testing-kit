@@ -1,4 +1,4 @@
-from .api_methods import insert, identify, delete, ping, reference_count
+from .api_methods import insert, identify, identify_url, delete, ping, reference_count
 from .criteria_resolver import criteria_resolver
 from .orchestrator_methods import parse_test_cases, save as save_file
 from .queue_methods import produce, consume
@@ -6,6 +6,7 @@ from .queue_methods import produce, consume
 __all__ = [
     'insert',
     'identify',
+    'identify_url',
     'delete',
     'ping',
     'reference_count',

@@ -26,11 +26,11 @@ def parse_step(st: str):
         found = p.group(1)
         parameters = [i.strip(' ') for i in found.split(',')]
     if method is None:
-        raise RuntimeError('Error is testcase. method not found')
-    if method not in ['insert', 'identify', 'delete', 'ping', 'reference_count']:
-        raise RuntimeError('Error is testcase. step: ' + st + ' is not a valid step')
+        raise RuntimeError('orchestrator_methods: Error is testcase. method not found')
+    if method not in ['insert', 'identify', 'identify_url', 'delete', 'ping', 'reference_count']:
+        raise RuntimeError('orchestrator_methods: Error is testcase. step: ' + st + ' is not a valid step')
     if parameters is None:
-        raise RuntimeError('Error is testcase. step: no person info found. Step: ' + st)
+        raise RuntimeError('orchestrator_methods: Error is testcase. step: no person info found. Step: ' + st)
     return method, parameters
 
 

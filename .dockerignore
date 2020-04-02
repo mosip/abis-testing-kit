@@ -1,4 +1,3 @@
 /src/db.sqlite3
 *.log
-*.env
 /venv

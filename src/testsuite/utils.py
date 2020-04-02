@@ -1,3 +1,4 @@
+from datetime import datetime
 import errno
 import json
 import os
@@ -6,9 +7,11 @@ import uuid
 from typing import List, Dict
 
 import base64
+
 from cbeff import Biometrics
+from config.settings import AppConfig
 from .models import RequestMap, Tests, Logs
-from orchestrator import parse_test_cases, insert, identify, delete, ping, reference_count, save_file, criteria_resolver
+from orchestrator import parse_test_cases, insert, identify, identify_url, delete, ping, reference_count, save_file, criteria_resolver
 
 
 def parse_biometric_file(name: str, path: str):
@@ -67,6 +70,7 @@ class Orchestrator:
             request_ids = []
             ptc['runId'] = self.run_id
             for idx, val in enumerate(ptc['steps']):
+                time.sleep(2)
                 st = ptc['steps'][idx]
                 status, msg, request, request_id = (None,) * 4
                 request_id = uuid.uuid4().hex
@@ -75,6 +79,9 @@ class Orchestrator:
                     ptc['steps'][idx]['request_id'] = request_id
                 elif st['method'] == 'identify':
                     status, msg, request = self.run_identify(st, request_id)
+                    ptc['steps'][idx]['request_id'] = request_id
+                elif st['method'] == 'identify_url':
+                    status, msg, request = self.run_identify_url(st, request_id)
                     ptc['steps'][idx]['request_id'] = request_id
                 elif st['method'] == 'delete':
                     status, msg, request = self.run_delete(st, request_id)
@@ -129,8 +136,25 @@ class Orchestrator:
     def run_identify(self, st, request_id):
         person = st['parameters'][0]
         reference_id = self.store[person]['reference_id']
-        ref_ids = st['parameters'][1:]
+        persons = st['parameters'][1:]
+        ref_ids = []
+        for per in persons:
+            rid = self.store[per]
+            if rid is not None:
+                ref_ids.append(rid['reference_id'])
         status, msg, request = identify(request_id, reference_id, ref_ids)
+        return status, msg, request
+
+    def run_identify_url(self, st, request_id):
+        person = st['parameters'][0]
+        reference_id = self.store[person]['reference_id']
+        persons = st['parameters'][1:]
+        ref_ids = []
+        for per in persons:
+            rid = self.store[per]
+            if rid is not None:
+                ref_ids.append(rid['reference_id'])
+        status, msg, request = identify_url(request_id, reference_id, ref_ids)
         return status, msg, request
 
     def run_delete(self, st, request_id):
@@ -150,9 +174,13 @@ class Orchestrator:
         return status, msg, request
 
     def responseChecker(self, req_ids: List):
+        t1 = datetime.now()
         all_ok_count = 0
         total_count = len(req_ids)
         while True:
+            delta = datetime.now() - t1
+            if int(delta.seconds + delta.microseconds/1E6) > int(AppConfig.abis_response_timeout):
+                raise Exception("ABIS response timeout, current timeout is "+AppConfig.abis_response_timeout+" seconds")
             print("all count: "+str(all_ok_count)+", total count: "+str(total_count))
             self.orchestrator_state()
             if all_ok_count == total_count:

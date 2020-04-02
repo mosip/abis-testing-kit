@@ -32,7 +32,7 @@ def insert(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def identify(request_id: str, reference_id: str, gallery_reference_ids: List[str]):
+def identify(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str]):
     """ Create a identify request
 
         Keyword arguments:
@@ -49,7 +49,7 @@ def identify(request_id: str, reference_id: str, gallery_reference_ids: List[str
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceURL}', AppConfig.callback_url)
+            data = data.replace('${referenceURL}', reference_url)
             data = data.replace('${timestamp}', str(int(time.time())))
             data = data.replace('${maxResults}', AppConfig.abis_max_results)
             data = data.replace('${targetFPIR}', AppConfig.abis_target_fpir)

@@ -1,9 +1,16 @@
 [
    {
-        "testId": "x",
+        "testId": "mantraq1",
         "testDescription": "x",
         "steps": [
-            "insert(person1)", "insert(person2)"
+            "insert(person1)", "insert(person2)", "identify(person3, person1, person2)", "identify_url(person3, person1, person2)"
+        ]
+    },
+  {
+        "testId": "nextq1",
+        "testDescription": "y",
+        "steps": [
+            "insert(person1)", "insert(person2)", "insert(person2)"
         ]
     }
 ]
