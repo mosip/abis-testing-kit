@@ -113,12 +113,12 @@ _where_
     "timestamp" : "1539777717",
     "returnValue" : 1,
     "candidateList" : {
-        "count" : "",
-        "candidates" : [
+        "count" : "2",
+        "candidates" : [    
             {
-                "referenceId" : "",
-                "internalScore": "",
-                "scaledScore" : "",
+                "referenceId" : "x",
+                "internalScore": "<abis specific>",
+                "scaledScore" : "<abis specific> 0-100",
                 "analytics": [
                     {
                         "key1": "value1",

@@ -2,7 +2,7 @@
 Provides a test framework for testing ABIS
 
 **Commands**
-
+* python3 -m venv venv
 * To install a new package: pip install <package_namr>
 * To freeze requirements: pip freeze > requirements.txt
 * Building docker images: sudo docker build -t abis-testing-kit . 

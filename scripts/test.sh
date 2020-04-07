@@ -1,7 +1,7 @@
 #!/bin/bash
 
 job=$$
-#source venv/bin/activate
+
 list_descendants ()
 {
   local children=$(ps -o pid= --ppid "$1")
@@ -17,7 +17,7 @@ list_descendants ()
   echo "$children"
 }
 
-cd /opt/abis-testing-kit/src
+cd ./../src
 python3 manage.py runserver 0.0.0.0:8000 --noreload &
 P1=$!
 
@@ -30,16 +30,13 @@ P3=$!
 python3 dummy_abis.py &
 P4=$!
 
-/opt/activemq/bin/activemq start &
-P5=$!
-
-PIDs=$(list_descendants $$ $P5)
+PIDs=$(list_descendants $$)
 
 echo "$PIDs" > ./../pid.txt
 trap 'kill $PIDs' SIGINT SIGTERM EXIT ERR
 #trap 'err=$?; echo >&2 "Exiting on error $err" >> ./../process.log exit $err' ERR
 
-while sleep 60; do
+while sleep 15; do
   if ps -p $P1 >/dev/null; then
       echo $P1": manage.py runserver active"
   else
@@ -64,9 +61,4 @@ while sleep 60; do
       echo "dummy_abis failed"
       kill "$PIDs" "$$"
   fi
-#  if ps -p $P5 >/dev/null; then
-#      echo $P5": activemq active"
-#  else
-#      echo "Activemq failed"
-#  fi
 done

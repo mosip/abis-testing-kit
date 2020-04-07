@@ -3,15 +3,13 @@ import os
 import logging
 import random
 import string
-import uuid
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.views.generic.base import View
 from drf_yasg.utils import swagger_auto_schema
 from django.forms.models import model_to_dict
-from .utils import parse_biometric_file, Orchestrator
-from abis_apis import prepare_insert_request
+from .utils import parse_biometric_file
 from cbeff import create as create_cbeff
 from .models import Tests, RequestMap, Logs
 

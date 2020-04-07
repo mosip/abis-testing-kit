@@ -1,0 +1,17 @@
+{
+    "type": "array",
+    "additionalItems": false,
+    "items": {
+        "type": "object",
+        "required": ["name", "reference_id"],
+        "additionalProperties": false,
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "reference_id": {
+                "type": "string"
+            }
+        }
+    }
+}

@@ -10,7 +10,7 @@ from typing import List
 from config.settings import AppConfig
 
 
-def insert(request_id: str, reference_id: str):
+def create_insert_request(request_id: str, reference_id: str):
     """ Create a insert request
 
         Keyword arguments:
@@ -32,7 +32,7 @@ def insert(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def identify(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str]):
+def create_identify_request(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str]):
     """ Create a identify request
 
         Keyword arguments:
@@ -65,7 +65,7 @@ def identify(request_id: str, reference_id: str, reference_url: str, gallery_ref
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def delete(request_id: str, reference_id: str):
+def create_delete_request(request_id: str, reference_id: str):
     """ Create a delete request
 
         Keyword arguments:
@@ -86,7 +86,7 @@ def delete(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def ping(request_id: str):
+def create_ping_request(request_id: str):
     """ Create a ping request
 
         Keyword arguments:
@@ -105,7 +105,7 @@ def ping(request_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def reference_count(request_id: str):
+def create_reference_count_request(request_id: str):
     """ Create a reference count request
 
         Keyword arguments:

@@ -1,0 +1,25 @@
+{
+    "type": "array",
+    "additionalItems": false,
+    "uniqueItems": true,
+    "items": {
+        "type": "object",
+        "required": ["testId", "testDescription", "steps"],
+        "additionalProperties": false,
+        "properties": {
+            "testId": {
+                "type": "string"
+            },
+            "testDescription": {
+                "type": "string"
+            },
+            "steps": {
+                "type": "array",
+                "additionalItems": false,
+                "items": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

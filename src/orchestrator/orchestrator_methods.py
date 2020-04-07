@@ -1,8 +1,40 @@
+import errno
 import json
 import os
 import re
 from copy import deepcopy
 from typing import Dict, List
+from jsonschema import validate, ValidationError
+
+abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config/schemas'))
+
+
+def validate_test_cases(tcs: List):
+    schema_path = os.path.join(abs_file_path, 'testcase.schema.json')
+    if os.path.isfile(schema_path):
+        with open(schema_path, 'r') as file:
+            schema = json.loads(file.read())
+            try:
+                validate(tcs, schema)
+                return True
+            except ValidationError as e:
+                raise NameError("Test case file is incorrect: "+str(e))
+    else:
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), schema_path)
+
+
+def validate_test_data(data: List):
+    schema_path = os.path.join(abs_file_path, 'testdata.schema.json')
+    if os.path.isfile(schema_path):
+        with open(schema_path, 'r') as file:
+            schema = json.loads(file.read())
+            try:
+                validate(data, schema)
+                return True
+            except ValidationError as e:
+                raise NameError("Test data file is incorrect: "+str(e))
+    else:
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), schema_path)
 
 
 def parse_test_cases(tcs: List):
@@ -34,9 +66,12 @@ def parse_step(st: str):
     return method, parameters
 
 
-def save(path: str, data):
+def save_file(path: str, data):
     if os.path.isfile(path):
         os.remove(path)
     with open(path, "a") as mf:
         mf.write(json.dumps(data, sort_keys=False, indent=4, separators=(',', ': ')))
         mf.close()
+
+
+

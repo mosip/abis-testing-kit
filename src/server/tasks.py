@@ -1,8 +1,8 @@
-from config.settings import Queue
-from orchestrator import consume
-from testsuite.models import RequestMap, Tests, Logs
-from testsuite.utils import Orchestrator
 import traceback
+from config.settings import Queue
+from testsuite.models import RequestMap, Tests, Logs
+from orchestrator.orchestration import Orchestrator
+from orchestrator.queue_methods import consume
 
 
 def get_response_from_queue():

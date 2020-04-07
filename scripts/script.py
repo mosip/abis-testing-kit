@@ -1,16 +1,9 @@
-
 import argparse
 import logging
-import os
-import shutil
-import sys
-import urllib.request
-import zipfile
-import platform
 import subprocess
-from distutils.dir_util import copy_tree
 
-logging.basicConfig(filename="debug.log", level=logging.DEBUG)
+
+logging.basicConfig(filename="../debug.log", level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler())
 parser = argparse.ArgumentParser(description='Script to setup testing kit')
 
@@ -30,7 +23,7 @@ print(args)
 
 def build_image():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'build', '-t', 'abis-testing-kit', '.'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['sudo', 'docker', 'build', '-t', 'abis-testing-kit', './../'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()

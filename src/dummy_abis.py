@@ -3,12 +3,12 @@ import time
 import sys
 import django
 import random
-from config.settings import Queue
-from orchestrator import consume, produce
-
 print(sys.path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 django.setup()
+
+from config.settings import Queue
+from orchestrator.queue_methods import consume, produce
 
 
 def run_job():

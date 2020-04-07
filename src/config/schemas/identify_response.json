@@ -1,0 +1,118 @@
+{
+    "type": "object",
+    "required": [
+        "id",
+        "requestId",
+        "timestamp",
+        "returnValue"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": "string",
+            "pattern": "^mosip.abis.identify$"
+        },
+        "requestId": {
+            "type": "string"
+        },
+        "timestamp": {
+            "type": "string",
+            "pattern": "^\\d*$"
+        },
+        "returnValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+        },
+        "candidateList": {
+            "type": "object",
+            "required": [
+                "count",
+                "candidates"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "count": {
+                    "type": "string",
+                    "pattern": "^\\d*$"
+                },
+                "candidates": {
+                    "type": "array",
+                    "additionalItems": false,
+                    "uniqueItems": true,
+                    "items": {
+                        "$ref": "#/definitions/candidate"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "candidate": {
+            "type": "object",
+            "required": [
+                "referenceId",
+                "internalScore",
+                "scaledScore",
+                "analytics",
+                "scores"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "referenceId": {
+                    "type": "string"
+                },
+                "internalScore": {
+                    "type": "string",
+                    "pattern": "^\\d*$"
+                },
+                "scaledScore": {
+                    "type": "string",
+                    "pattern": "^\\d*$"
+                },
+                "analytics": {
+                    "$ref": "#/definitions/analyticsType"
+                },
+                "scores": {
+                    "type": "array",
+                    "additionalItems": false,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "biometricType",
+                            "scaledScore",
+                            "internalScore",
+                            "analytics"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "biometricType": {
+                                "type": "string"
+                            },
+                            "internalScore": {
+                                "type": "string",
+                                "pattern": "^\\d*$"
+                            },
+                            "scaledScore": {
+                                "type": "string",
+                                "pattern": "^\\d*$"
+                            },
+                            "analytics": {
+                                "$ref": "#/definitions/analyticsType"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "analyticsType": {
+            "type": "array",
+            "additionalItems": false,
+            "uniqueItems": true,
+            "items": {
+                "type": "object"
+            }
+        }
+    }
+}
