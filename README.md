@@ -3,7 +3,7 @@ Provides a test framework for testing ABIS
 
 **Requirements**
 * python3 > 3.6.x; python3 --version
-* docker > 19.x.x; 
+* docker > 19.x.x; docker -v
 
 **Setup**
 * create a .env file in the repository root using the .evn.example file.
