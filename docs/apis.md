@@ -46,7 +46,7 @@ _where_
 
 
 
-# Identity
+# Identify
 
 Identify biometric data of an Individual. [reference](https://github.com/mosip/documentation/wiki/ABIS-APIs)
 
@@ -241,7 +241,7 @@ _where_
 
 
 
-# reference count
+# Reference count
 
 * ABIS will send a count of records in the reference database
 

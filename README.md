@@ -18,6 +18,11 @@ Provides a test framework for testing ABIS
 * run "python3 dummy_abis.py"; it will start a dummy abis to analyse the request and return responses in queues. 
 
 
+**Documentation**
+* [How to write test cases](./docs/testcase.md)
+* [How to add test data](./docs/testdata.md)
+* [Sample test and result analysis](./docs/sample.md)
+
 
 **Contents**
 * [Design diagram](./docs/images/ABIS-kit%20diagram.jpg)

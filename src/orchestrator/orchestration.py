@@ -57,31 +57,33 @@ class Orchestrator:
             request_ids = []
             ptc['runId'] = self.run_id
             for idx, val in enumerate(ptc['steps']):
+                ptc['steps'][idx]['requestStatus'] = False
+                ptc['steps'][idx]['requestMsg'] = ''
                 time.sleep(2)
                 st = ptc['steps'][idx]
                 status, msg, request, request_id = (None,) * 4
                 request_id = uuid.uuid4().hex
                 if st['method'] == 'insert':
                     status, msg, request = self.run_insert(st, request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'identify':
                     status, msg, request = self.run_identify(st, request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'identify_url':
                     status, msg, request = self.run_identify_url(st, request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'delete':
                     status, msg, request = self.run_delete(st, request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'ping':
                     status, msg, request = self.run_ping(request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'reference_count':
                     status, msg, request = self.run_reference_count(request_id)
-                    ptc['steps'][idx]['request_id'] = request_id
+                    ptc['steps'][idx]['requestId'] = request_id
 
-                ptc['steps'][idx]['status'] = status
-                ptc['steps'][idx]['msg'] = msg
+                ptc['steps'][idx]['requestStatus'] = status
+                ptc['steps'][idx]['requestMsg'] = msg
                 ptc['steps'][idx]['request'] = request
                 request_ids.append(request_id)
 

@@ -7,7 +7,7 @@ def criteria_resolver(test_cases: List):
     final_results = []
     test_cases_c = deepcopy(test_cases)
     for test in test_cases_c:
-        test['results'] = {}
+        test['runResults'] = {}
         final_results.append(analyse(response_validator(test)))
     return final_results
 
@@ -16,16 +16,19 @@ def analyse(test: Dict):
     failed = 0
     passed = 0
     steps: List = test['steps']
-    for step in test['steps']:
+    for idx, step in enumerate(test['steps']):
         if step['passed'] is True:
             if int(step['response']['returnValue']) == 1:
                 failed += 1
+                test['steps'][idx]['passed'] = False
             else:
                 passed += 1
+                test['steps'][idx]['passed'] = True
         else:
             failed += 1
-    test['results']['steps_failed'] = failed
-    test['results']['step_passed'] = passed
+            test['steps'][idx]['passed'] = False
+    test['runResults']['failed'] = failed
+    test['runResults']['passed'] = passed
     return test
 
 
