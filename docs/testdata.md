@@ -1,10 +1,16 @@
 ## Test data
 
-Test data object contains the info about the user data, used in tests
+Test data json contains an array of user data, used in tests
 
 ```json
-{
-  "person": "x",
-  "file":  "<path>"
-}
+[
+    {
+      "name": "x1",
+      "reference_id":  "y1"
+    },
+    {
+      "name": "x2",
+      "reference_id":  "y2"
+    }
+]
 ```

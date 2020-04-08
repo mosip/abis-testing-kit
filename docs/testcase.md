@@ -1,16 +1,22 @@
 ## Test cases
 
-A test object is an json object that contains the necessary to run tests
+A test case json file contains an array of test object that contains the necessary to run tests
 
 ```json
-{
-    "testId": "x",
-    "testUUID": "",
-    "testDescription": "x",
-    "steps": [
-        "insert(person1)", "insert(person2)", "identify(person3)"
-    ],
-    "status": "success/ pending/ failed",
-    "status_msg": "reason for failure"
-}
+[
+    {
+        "testId": "x1",
+        "testDescription": "y1",
+        "steps": [
+            "insert(person1)", "insert(person2)", "identify(person3, person1, person2)"
+        ]
+    },
+    {
+        "testId": "x2",
+        "testDescription": "y2",
+        "steps": [
+            "insert(person1)", "insert(person2)", "identify(person3, person1, person2)"
+        ]
+    }
+]
 ```

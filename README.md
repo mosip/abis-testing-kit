@@ -1,19 +1,23 @@
 # ABIS testing kit
 Provides a test framework for testing ABIS
 
-**Commands**
-* python3 -m venv venv
-* To install a new package: pip install <package_namr>
-* To freeze requirements: pip freeze > requirements.txt
-* Building docker images: sudo docker build -t abis-testing-kit . 
-* Running docker: sudo docker run -d -it --hostname=localhost --name abis-testing-app -p 8000:8000 --log-driver json-file abis-testing-kit
-* Go inside container: sudo docker exec -it abis-testing-app bash
-* remove all containers: sudo docker rm -f $(sudo docker ps -a -q)
-* run django inside container: python3 manage.py runserver 0.0.0.0:8000 --noreload
+**Requirements**
+* python3 > 3.6.x; python3 --version
+* docker > 19.x.x; 
 
-* sudo docker build -t abis-testing-kit-test . -f Dockerfile-test
-* sudo docker run -d -it --hostname=localhost --name abis-testing-test -p 8000:8000 --log-driver json-file abis-testing-kit-test
-* sudo docker exec -it abis-testing-kit bash
+**Setup**
+* create a .env file in the repository root using the .evn.example file.
+* update the .env with your properties.
+* add your data in REPO_ROOT/sample_data including test_cases.json, test_data.json, respective cbeff files. Default files have already been added if you just want to try.
+* go to REPO_ROOT/scripts folder.
+* run "python3 script.py setup"; this will create a docker image and run it.
+* for rollback, use "python3 script.py rollback".
+
+**Dummy ABIS**
+* go to REPO_ROOT/src
+* run "python3 dummy_abis.py"; it will start a dummy abis to analyse the request and return responses in queues. 
+
+
 
 **Contents**
 * [Design diagram](./docs/images/ABIS-kit%20diagram.jpg)
