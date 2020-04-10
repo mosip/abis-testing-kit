@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
     # noinspection PyMethodMayBeStatic
     def test_request_creator(self):
         from orchestrator.request_creator import create_identify_request
-        data = create_identify_request("123", "zxs123", ["sasasa", "adadadad"])
+        data = create_identify_request("123", "zxs123", "adada", ["sasasa", "adadadad"])
         print(data)
 
     # noinspection PyMethodMayBeStatic

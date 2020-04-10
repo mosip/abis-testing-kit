@@ -7,7 +7,7 @@ import time
 import errno
 import os
 from typing import List
-from config.settings import AppConfig
+from config.settings_override import app_config
 
 
 def create_insert_request(request_id: str, reference_id: str):
@@ -17,6 +17,7 @@ def create_insert_request(request_id: str, reference_id: str):
         request_id -- request_id
         reference_id -- reference_id
     """
+    app_conf = app_config()
     file_path = "config/insert.json"
     abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', file_path))
     print("Absolute path of " + file_path + ": " + abs_file_path)
@@ -25,7 +26,7 @@ def create_insert_request(request_id: str, reference_id: str):
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceURL}', AppConfig.callback_url)
+            data = data.replace('${referenceURL}', app_conf.callback_url)
             data = data.replace('${timestamp}', str(int(time.time())))
             return json.loads(data)
     else:
@@ -41,6 +42,7 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
         reference_url -- reference_url
         gallery_reference_ids -- gallery reference ids to match with
     """
+    app_conf = app_config()
     file_path = "config/identify.json"
     abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', file_path))
     print("Absolute path of " + file_path + ": " + abs_file_path)
@@ -51,8 +53,8 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
             data = data.replace('${referenceId}', reference_id)
             data = data.replace('${referenceURL}', reference_url)
             data = data.replace('${timestamp}', str(int(time.time())))
-            data = data.replace('${maxResults}', AppConfig.abis_max_results)
-            data = data.replace('${targetFPIR}', AppConfig.abis_target_fpir)
+            data = data.replace('${maxResults}', app_conf.abis_max_results)
+            data = data.replace('${targetFPIR}', app_conf.abis_target_fpir)
             data = json.loads(data)
             if len(gallery_reference_ids) != 0:
                 data["gallery"] = {"referenceIds": []}

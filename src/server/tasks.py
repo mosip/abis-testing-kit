@@ -1,14 +1,15 @@
 import traceback
-from config.settings import Queue
+from config.settings_override import queue_config
 from testsuite.models import RequestMap, Tests, Logs
 from orchestrator.orchestration import Orchestrator
 from orchestrator.queue_methods import consume
 
 
 def get_response_from_queue():
-    print("get_response_from_queue: started")
     try:
-        status, body = consume(Queue.consume_address, Queue.client_id)
+        conf = queue_config()
+        print("get_response_from_queue host[" + conf.host + "] : started")
+        status, body = consume(conf.host, conf.consume_address, conf.user, conf.password, conf.client_id)
         if status is True:
             request_id = body['requestId']
             request_map = RequestMap.objects.filter(request_id=request_id).first()
@@ -28,7 +29,7 @@ def get_response_from_queue():
 
 def run_orchestrator():
     print("get_response_from_queue: started")
-    run_id = None;
+    run_id = None
     try:
         test = Tests.objects.all().first()
         if test is not None and test.status not in ['completed', 'error']:

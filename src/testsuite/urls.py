@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include, re_path
-from .views import index, Generate, StartRun, CancelRun, GetCbeff, RunStatus
+from .views import index, Generate, StartRun, CancelRun, get_cbeff, settings, RunStatus, get_sample_settings, get_current_config, UploadOverrideSettings
 
 
 urlpatterns = [
     path('', index),
+    re_path(r'^settings\W?$', settings),
     re_path(r'^test\W?$', StartRun.as_view()),
     re_path(r'^generate\W?$', Generate.as_view()),
     re_path(r'^cancel\W?$', CancelRun.as_view()),
@@ -26,5 +27,8 @@ urlpatterns = [
     # re_path(r'^produce\W?$', InsertEntry.as_view()),
     # re_path(r'^consume\W?$', GetEntry.as_view()),
     path('test_info/<str:run_id>', StartRun.as_view()),
-    path('get_cbeff/<str:reference_id>', GetCbeff.as_view())
+    path('get_cbeff/<str:reference_id>', get_cbeff),
+    re_path(r'^get_current_config\W?$', get_current_config),
+    re_path(r'^get_sample_settings\W?$', get_sample_settings),
+    re_path(r'^upload_override_settings\W?$', UploadOverrideSettings.as_view())
 ]

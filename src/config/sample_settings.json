@@ -1,0 +1,13 @@
+{
+    "atk.queue.host": "",
+    "atk.queue.user": "",
+    "atk.queue.password": "",
+    "atk.queue.send_address": "",
+    "atk.queue.consume_address": "",
+    "atk.queue.client_id": "",
+    "atk.app.callback_url": "http://localhost:8000/get_cbeff/",
+    "atk.app.abis_max_results": "30",
+    "atk.app.abis_target_fpir": "30",
+    "atk.app.abis_response_timeout": "30",
+    "atk.app.abis_threshold": "60"
+}

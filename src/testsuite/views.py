@@ -3,12 +3,17 @@ import os
 import logging
 import random
 import string
+import binascii
+import uu
+from typing import NamedTuple
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.views.generic.base import View
 from drf_yasg.utils import swagger_auto_schema
 from django.forms.models import model_to_dict
+from orchestrator.orchestrator_methods import save_file
+from config.settings_override import app_config, queue_config
 from .utils import parse_biometric_file
 from cbeff import create as create_cbeff
 from .models import Tests, RequestMap, Logs
@@ -18,6 +23,10 @@ logger = logging.getLogger("server.custom")
 
 def index(request):
     return render(request, 'testsuite/index.html')
+
+
+def settings(request):
+    return render(request, 'testsuite/settings.html')
 
 
 class Generate(View):
@@ -123,23 +132,60 @@ class RunStatus(View):
             return JsonResponse({"status": True, "msg": model_to_dict(test), "logs": logs})
 
 
-class GetCbeff(View):
+def get_cbeff(self, request, reference_id):
+    abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
+    if os.path.exists(abs_store_path):
+        for filename in os.listdir(abs_store_path):
+            if filename == reference_id+'.xml':
+                abs_file_path = os.path.join(abs_store_path, filename)
+                try:
+                    with open(abs_file_path, 'r') as f:
+                        file_data = f.read()
 
-    def get(self, request, reference_id):
-        abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
-        if os.path.exists(abs_store_path):
-            for filename in os.listdir(abs_store_path):
-                if filename == reference_id+'.xml':
-                    abs_file_path = os.path.join(abs_store_path, filename)
-                    try:
-                        with open(abs_file_path, 'r') as f:
-                            file_data = f.read()
+                    # sending response
+                    response = HttpResponse(file_data, content_type='application/xml')
+                    response['Content-Disposition'] = 'attachment; filename="cbeff.xml"'
+                    return response
+                except IOError:
+                    response = HttpResponseNotFound('<h1>File not exist</h1>')
+                    return response
+    return HttpResponseNotFound('<h1>File not exist</h1>')
 
-                        # sending response
-                        response = HttpResponse(file_data, content_type='application/xml')
-                        response['Content-Disposition'] = 'attachment; filename="cbeff.xml"'
-                        return response
-                    except IOError:
-                        response = HttpResponseNotFound('<h1>File not exist</h1>')
-                        return response
+
+def get_sample_settings(request):
+    abs_settings_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config/sample_settings.json'))
+    if os.path.isfile(abs_settings_path):
+        with open(abs_settings_path, 'r') as f:
+            file_data = f.read()
+            # sending response
+            response = HttpResponse(file_data, content_type='application/json')
+            response['Content-Disposition'] = 'attachment; filename="sample_settings.json"'
+            return response
+    else:
         return HttpResponseNotFound('<h1>File not exist</h1>')
+
+
+def get_current_config(request):
+    app_conf = app_config()._asdict()
+    queue_conf = queue_config()._asdict()
+    queue_conf.update(app_conf)
+    return JsonResponse({"status": True, "msg": queue_conf})
+
+
+class UploadOverrideSettings(View):
+
+    def post(self, request, *args, **kwargs):
+        """ removing previous data """
+        file = request.FILES['file']
+        if file is not None:
+            settings = file.read().decode("utf-8")
+            try:
+                settings = json.loads(settings)
+            except ValueError as e:
+                print(e)
+                return JsonResponse({"status": False, "msg": "Invalid json file: "+str(e)})
+            path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config/settings.json'))
+            save_file(path, settings)
+            return JsonResponse({"status": True, "msg": "Settings uploaded successfully"}, json_dumps_params={'indent': 2})
+        else:
+            return JsonResponse({"status": False, "msg": "No settings file was attached"}, json_dumps_params={'indent': 2})

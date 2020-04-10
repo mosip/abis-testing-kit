@@ -1,5 +1,9 @@
 # settings.py
+import json
 import os
+from collections import namedtuple
+from typing import Dict, Type
+
 from dotenv import load_dotenv
 from pathlib import Path  # python3 only
 load_dotenv()
@@ -28,7 +32,7 @@ class CBEFFConfig:
     bir_info_integrity = os.getenv("atk.cbeff.birinfo.integrity")  # default false
 
 
-class Queue:
+class QueueConfig:
     """ Queue related config """
     host = os.getenv("atk.queue.host")  # default 'http://localhost'
     port = os.getenv("atk.queue.port")  # default '8161'
@@ -42,7 +46,8 @@ class Queue:
 class AppConfig:
     """ App config """
     callback_url = os.getenv("atk.app.callback_url")  # default 'http://localhost:8000/'
-    abis_host = os.getenv("atk.app.abis_host")
     abis_max_results = os.getenv("atk.app.abis_max_results")  # default 30
     abis_target_fpir = os.getenv("atk.app.abis_target_fpir")  # default 30
-    abis_response_timeout = os.getenv("atk.app.abis.response.timeout")  # timeout for the step to wait for abis response should be atleast greater than 30
+    abis_response_timeout = os.getenv("atk.app.abis_response_timeout")
+    abis_threshold = os.getenv("atk.app.abis_threshold")
+

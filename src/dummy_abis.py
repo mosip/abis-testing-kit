@@ -7,7 +7,8 @@ print(sys.path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 django.setup()
 
-from config.settings import Queue
+from config.settings import QueueConfig
+from config.settings_override import queue_config
 from orchestrator.queue_methods import consume, produce
 
 
@@ -15,7 +16,8 @@ def run_job():
     i = 1
     while True:
         try:
-            status, body = consume(Queue.send_address, 'dummy_abis')
+            conf = queue_config()
+            status, body = consume(conf.host, conf.send_address, conf.user, conf.password, 'dummy_abis')
             if status is True:
                 print("Message found")
                 print(str(body))
@@ -27,7 +29,7 @@ def run_job():
                     "timestamp": str(int(time.time())),
                     "returnValue": random.randint(1, 2)
                 }
-                r_status, r_body = produce(Queue.consume_address, response)
+                r_status, r_body = produce(response, conf.host, conf.consume_address, conf.user, conf.password)
                 if r_status is True:
                     print(r_body)
                     print("Message delivered")

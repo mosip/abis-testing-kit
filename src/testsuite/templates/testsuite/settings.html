@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ABIS testing kit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* Loader 6 */
+        .loader-6 {
+            height: 72px;
+            width: 72px;
+        }
+        .loader-6 span {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+            height: 72px;
+            width: 72px;
+        }
+        .loader-6 span::before,
+        .loader-6 span::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+            height: 72px;
+            width: 72px;
+            border: 2px solid #4371F0;
+            border-radius: 50%;
+            opacity: 0;
+            -webkit-animation: loader-6-1 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) infinite;
+                    animation: loader-6-1 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) infinite;
+        }
+        @-webkit-keyframes loader-6-1 {
+            0%   { -webkit-transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { -webkit-transform: translate3d(0, 0, 0) scale(1.5); opacity: 0; }
+        }
+        @keyframes loader-6-1 {
+            0%   { transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { transform: translate3d(0, 0, 0) scale(1.5); opacity: 0; }
+        }
+        .loader-6 span::after {
+            -webkit-animation: loader-6-2 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) .25s infinite;
+                    animation: loader-6-2 1.5s cubic-bezier(0.075, 0.820, 0.165, 1.000) .25s infinite;
+        }
+        @-webkit-keyframes loader-6-2 {
+            0%   { -webkit-transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { -webkit-transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+        }
+        @keyframes loader-6-2 {
+            0%   { transform: translate3d(0, 0, 0) scale(0); opacity: 1; }
+            100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+        }
+        .center {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            bottom: 0; right: 0;
+            margin: auto;
+        }
+        .nav-link {
+            font-size: 18px;
+            font-weight: 500;
+            margin-right: 15px;
+        }
+        .settings-view {
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'testsuite/navbar.html' %}
+    <div class="container">
+        <div class="row pt-2 pb-2 d-flex align-content-center flex-column">
+            <div class="card w-50 mb-5">
+                <div class="card-body">
+                    <button type="button" class="btn btn-info md m-auto" onclick="get_settings()">Current settings</button>
+                    <button type="button" class="btn btn-secondary md m-auto" onclick="window.location.href='/get_sample_settings'">Sample settings file</button>
+                    <div class="col-12 pt-3 pb-3">
+                        <pre id="config_view"></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card w-50">
+                <div class="card-body">
+                    <h5 class="card-title">Upload settings</h5>
+                    <i class="card-text">Tip: download the sample settings file and upload it after making your changes</i>
+                    <form class="m-auto pt-3">
+                        <div class="form-group">
+                            <input id="upload_file" type="file" class="form-control-file">
+                        </div>
+                        <button type="button" class="btn btn-primary md m-auto" onclick="upload()">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    let host = 'http://localhost:8000/';
+    function upload(){
+        let file = $('#upload_file')[0].files;
+        console.log(file);
+        if(file.length === 0){
+            alert("Please select a settings file to upload");
+            return
+        }
+        let formData = new FormData();
+        formData.append('file', file[0]);
+        $.ajax({
+            url: host+"upload_override_settings",
+            data: formData,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            success: function(body){
+                if(body.status){
+                    alert("Settings file has been updated.");
+                    window.location.reload();
+                }else{
+                    alert(body.msg);
+                }
+            }
+        });
+    }
+
+    function get_settings(){
+        $.ajax({
+            url: host+"get_current_config",
+            type: "GET",
+            success: function(body){
+                if(body.status){
+                    $('#config_view').text(JSON.stringify(body.msg, undefined, 2));
+                }
+            }
+        });
+    }
+</script>
+</html>

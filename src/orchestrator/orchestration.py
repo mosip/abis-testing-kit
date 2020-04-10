@@ -6,7 +6,7 @@ import time
 import uuid
 from typing import List
 
-from config.settings import AppConfig
+from config.settings_override import app_config
 from orchestrator.api_methods import insert, identify, identify_url, delete, ping, reference_count
 from orchestrator.orchestrator_methods import parse_test_cases, save_file, validate_test_data, validate_test_cases
 from orchestrator.criteria_resolver import criteria_resolver
@@ -20,6 +20,7 @@ class Orchestrator:
         self.run_type = run_type
         self.log_tx = []
         self.store = {}
+        self.app_conf = app_config()
         return
 
     def run(self):
@@ -99,7 +100,7 @@ class Orchestrator:
                 self.responseChecker(request_ids)
 
             for idx, val in enumerate(ptc['steps']):
-                request_map = RequestMap.objects.filter(request_id=val['request_id']).first()
+                request_map = RequestMap.objects.filter(request_id=val['requestId']).first()
                 if request_map is not None:
                     response = request_map.response.replace("\'", "\"")
                     ptc['steps'][idx]['response'] = json.loads(response)
@@ -168,8 +169,8 @@ class Orchestrator:
         total_count = len(req_ids)
         while True:
             delta = datetime.now() - t1
-            if int(delta.seconds + delta.microseconds/1E6) > int(AppConfig.abis_response_timeout):
-                raise Exception("ABIS response timeout, current timeout is "+AppConfig.abis_response_timeout+" seconds")
+            if int(delta.seconds + delta.microseconds/1E6) > int(self.app_conf.abis_response_timeout):
+                raise Exception("ABIS response timeout, current timeout is "+self.app_conf.abis_response_timeout+" seconds")
             print("all count: "+str(all_ok_count)+", total count: "+str(total_count))
             self.orchestrator_state()
             if all_ok_count == total_count:
