@@ -31,16 +31,16 @@ class Orchestrator:
             os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result', self.run_id + '.json'))
         store_abs_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
         test_case_file_path = os.path.join(store_abs_path, 'test_cases.json')
-        test_data_file_path = os.path.join(store_abs_path, 'test_data.json')
+        persona_data_file_path = os.path.join(store_abs_path, 'persona_data.json')
         if not os.path.isfile(test_case_file_path):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), test_case_file_path)
-        if not os.path.isfile(test_data_file_path):
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), test_data_file_path)
+        if not os.path.isfile(persona_data_file_path):
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), persona_data_file_path)
 
         with open(test_case_file_path, 'r') as file:
             test_cases: List = json.loads(file.read())
 
-        with open(test_data_file_path, 'r') as file:
+        with open(persona_data_file_path, 'r') as file:
             test_data: List = json.loads(file.read())
 
         """ validation of test_case and test_data """
@@ -114,7 +114,7 @@ class Orchestrator:
         save_file(log_abs_path, final_results)
 
         for ent in final_results:
-            Logs(run_id=self.run_id, log="Test: "+ent['testId']+", result: "+str(ent['results'])).save()
+            Logs(run_id=self.run_id, log="Test: "+ent['testId']+", result: "+str(ent['runResults'])).save()
         return
 
     def run_insert(self, st, request_id):

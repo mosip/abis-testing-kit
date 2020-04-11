@@ -9,3 +9,4 @@
 /src/result/
 /src/orchestrator/temp_data/*
 /src/job_data/*
+/tmp

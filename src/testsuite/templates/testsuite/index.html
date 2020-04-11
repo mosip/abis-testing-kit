@@ -146,7 +146,7 @@
         run_name = $('#runName').val();
         let run_type = $('#runType').val();
         $.ajax({
-            url: host+"test",
+            url: host+"test/run",
             type: "POST",
             data: {'run_name': run_name, 'run_type': run_type},
             success: function(body){
@@ -162,7 +162,7 @@
 
     function cancelRun(){
         $.ajax({
-            url: host+"cancel",
+            url: host+"test/cancel",
             type: "POST",
             success: function(body){
                 if(body.status){
@@ -176,7 +176,7 @@
 
     function getStatus(){
         $.ajax({
-            url: host+"status",
+            url: host+"test/status",
             type: "POST",
             success: function(body){
                 if(body.status){
@@ -200,18 +200,9 @@
     }
 
     function openTest(){
-        window.open(host+'test_info/'+run_name)
+        window.open(host+'test/info/'+run_name)
     }
 
-    function clearTests(){
-        $.ajax({
-            url: host+"clear",
-            type: "POST",
-            success: function(){
-                window.location.reload();
-            }
-        });
-    }
     function changeState(v){
         if(v == 're_run'){
             $('.run_rel').addClass('d-none');

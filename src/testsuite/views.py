@@ -4,21 +4,29 @@ import logging
 import random
 import string
 import binascii
+import traceback
 import uu
+import zipfile
 from typing import NamedTuple
 
-from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, FileResponse, HttpResponseServerError
 from django.shortcuts import render
 from django.views.generic.base import View
 from drf_yasg.utils import swagger_auto_schema
 from django.forms.models import model_to_dict
-from orchestrator.orchestrator_methods import save_file
+from orchestrator.orchestrator_methods import save_file, create_zip, extract_testdata, cleanTmp
 from config.settings_override import app_config, queue_config
 from .utils import parse_biometric_file
 from cbeff import create as create_cbeff
 from .models import Tests, RequestMap, Logs
 
 logger = logging.getLogger("server.custom")
+abs_tmp_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../../', 'tmp'))
+abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
+abs_data_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'data'))
+abs_result_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result'))
+abs_config_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config'))
+
 
 
 def index(request):
@@ -29,15 +37,16 @@ def settings(request):
     return render(request, 'testsuite/settings.html')
 
 
+def testdata(request):
+    return render(request, 'testsuite/testdata.html')
+
+
 class Generate(View):
 
     @staticmethod
     @swagger_auto_schema(operation_description="description")
     def post(request, *args, **kwargs):
         more_info = []
-        abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
-        data_path = "data"
-        abs_data_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', data_path))
         logger.info("data path: " + abs_data_path)
         if os.path.exists(abs_data_path):
             dir_count = 0
@@ -77,7 +86,6 @@ class StartRun(View):
         run_type = "sync" if request.POST['run_type'] == "sync" else "async"
 
         """ removing previous data """
-        abs_result_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result'))
         if os.path.exists(abs_result_path):
             for item in os.listdir(abs_result_path):
                 os.remove(os.path.join(abs_result_path, item))
@@ -90,7 +98,7 @@ class StartRun(View):
         return JsonResponse({"status": True, "msg": model_to_dict(td)})
 
     def get(self, request, run_id):
-        abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result/'+run_id+'.json'))
+        abs_file_path = os.path.join(abs_result_path, run_id+'.json')
         logger.info("get test abs file path: " + abs_file_path)
         if os.path.isfile(abs_file_path):
             try:
@@ -108,7 +116,6 @@ class CancelRun(View):
 
     def post(self, request, *args, **kwargs):
         """ removing previous data """
-        abs_result_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'result'))
         if os.path.exists(abs_result_path):
             for item in os.listdir(abs_result_path):
                 os.remove(os.path.join(abs_result_path, item))
@@ -133,7 +140,6 @@ class RunStatus(View):
 
 
 def get_cbeff(self, request, reference_id):
-    abs_store_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'store'))
     if os.path.exists(abs_store_path):
         for filename in os.listdir(abs_store_path):
             if filename == reference_id+'.xml':
@@ -153,7 +159,7 @@ def get_cbeff(self, request, reference_id):
 
 
 def get_sample_settings(request):
-    abs_settings_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config/sample_settings.json'))
+    abs_settings_path = os.path.join(abs_config_path, 'sample_settings.json')
     if os.path.isfile(abs_settings_path):
         with open(abs_settings_path, 'r') as f:
             file_data = f.read()
@@ -184,8 +190,67 @@ class UploadOverrideSettings(View):
             except ValueError as e:
                 print(e)
                 return JsonResponse({"status": False, "msg": "Invalid json file: "+str(e)})
-            path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', 'config/settings.json'))
+            path = os.path.join(abs_config_path, 'settings.json')
             save_file(path, settings)
             return JsonResponse({"status": True, "msg": "Settings uploaded successfully"}, json_dumps_params={'indent': 2})
         else:
             return JsonResponse({"status": False, "msg": "No settings file was attached"}, json_dumps_params={'indent': 2})
+
+
+def get_current_testdata(View):
+    try:
+        zip_path = os.path.join(abs_tmp_path, 'testdata.zip')
+
+        if os.path.isfile(zip_path):
+            os.remove(zip_path)
+
+        if not os.path.exists(abs_tmp_path):
+            os.makedirs(abs_tmp_path)
+
+        create_zip(abs_store_path, zip_path)
+        zip_file = open(zip_path, 'rb')
+        return FileResponse(zip_file)
+    except Exception as e:
+        print(e)
+        print(traceback.print_tb(e.__traceback__))
+        return HttpResponseServerError()
+
+
+def get_sample_testdata(View):
+    try:
+        zip_path = os.path.join(abs_tmp_path, 'testdata.zip')
+
+        if os.path.isfile(zip_path):
+            os.remove(zip_path)
+
+        if not os.path.exists(abs_tmp_path):
+            os.makedirs(abs_tmp_path)
+
+        create_zip(abs_store_path, zip_path)
+        zip_file = open(zip_path, 'rb')
+        return FileResponse(zip_file)
+    except Exception as e:
+        print(e)
+        print(traceback.print_tb(e.__traceback__))
+        return HttpResponseServerError()
+
+
+class UploadTestData(View):
+
+    def post(self, request, *args, **kwargs):
+        """ removing previous data """
+        cleanTmp()
+        try:
+            fs = request.FILES['file']
+            if fs is not None:
+                file = open(os.path.join(abs_tmp_path, 'testdata.zip'), 'wb')
+                file.write(fs.read())
+                file.close()
+                extract_testdata(os.path.join(abs_tmp_path, 'testdata.zip'))
+                return JsonResponse({"status": True, "msg": "Settings uploaded successfully"})
+            else:
+                return JsonResponse({"status": False, "msg": "No settings file was attached"})
+        except Exception as e:
+            print(e)
+            print(traceback.print_tb(e.__traceback__))
+            return JsonResponse({"status": False, "msg": str(e)})

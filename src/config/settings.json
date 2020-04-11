@@ -1,8 +1,0 @@
-{
-    "atk.queue.client_id": "cusiofd",
-    "atk.app.callback_url": "http://localhost:8161/get_cbeff/",
-    "atk.app.abis_max_results": "300",
-    "atk.app.abis_target_fpir": "300",
-    "atk.app.abis.response.timeout": "300",
-    "atk.app.abis.threshold": "60"
-}

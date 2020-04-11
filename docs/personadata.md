@@ -1,6 +1,6 @@
-## Test data
+## Persona data
 
-Test data json contains an array of persona data, used in test case execution
+Persona data json contains an array of persona data, used in test case execution
 
 * name is the name of the the persona, name will be used in the test case to map a user
 * reference_id is an unique identifier for persona, will be used to map the persona and its cbeff.xml file

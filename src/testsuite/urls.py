@@ -14,21 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include, re_path
-from .views import index, Generate, StartRun, CancelRun, get_cbeff, settings, RunStatus, get_sample_settings, get_current_config, UploadOverrideSettings
+from .views import index, StartRun, CancelRun, get_cbeff, settings, testdata, RunStatus, UploadTestData, \
+    get_sample_settings, get_current_config, UploadOverrideSettings, get_current_testdata, get_sample_testdata
 
 
 urlpatterns = [
     path('', index),
+    path('cbeff/<str:reference_id>', get_cbeff),
+
+    re_path(r'^test/run\W?$', StartRun.as_view()),
+    re_path(r'^test/cancel\W?$', CancelRun.as_view()),
+    re_path(r'^test/status\W?$', RunStatus.as_view()),
+    path('test/info/<str:run_id>', StartRun.as_view()),
+
     re_path(r'^settings\W?$', settings),
-    re_path(r'^test\W?$', StartRun.as_view()),
-    re_path(r'^generate\W?$', Generate.as_view()),
-    re_path(r'^cancel\W?$', CancelRun.as_view()),
-    re_path(r'^status\W?$', RunStatus.as_view()),
-    # re_path(r'^produce\W?$', InsertEntry.as_view()),
-    # re_path(r'^consume\W?$', GetEntry.as_view()),
-    path('test_info/<str:run_id>', StartRun.as_view()),
-    path('get_cbeff/<str:reference_id>', get_cbeff),
-    re_path(r'^get_current_config\W?$', get_current_config),
-    re_path(r'^get_sample_settings\W?$', get_sample_settings),
-    re_path(r'^upload_override_settings\W?$', UploadOverrideSettings.as_view())
+    re_path(r'^settings/current\W?$', get_current_config),
+    re_path(r'^settings/sample\W?$', get_sample_settings),
+    re_path(r'^setting/upload\W?$', UploadOverrideSettings.as_view()),
+
+    re_path(r'^testdata\W?$', testdata),
+    re_path(r'^testdata/current\W?$', get_current_testdata),
+    re_path(r'^testdata/sample\W?$', get_sample_testdata),
+    re_path(r'^testdata/upload\W?$', UploadTestData.as_view())
 ]
