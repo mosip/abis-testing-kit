@@ -10,6 +10,12 @@
             "testId": {
                 "type": "string"
             },
+            "config": {
+                "type": "object"
+            },
+            "comments": {
+                "type": "string"
+            },
             "testDescription": {
                 "type": "string"
             },

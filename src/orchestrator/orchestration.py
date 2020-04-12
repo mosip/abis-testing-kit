@@ -117,7 +117,7 @@ class Orchestrator:
             Logs(run_id=self.run_id, log="Test: "+ptc['testId']+", all steps have been executed").save()
 
         Logs(run_id=self.run_id, log="Criteria resolver stage: ").save()
-        final_results = criteria_resolver(self.log_tx)
+        final_results = criteria_resolver(self.log_tx, self.store)
         save_file(log_abs_path, final_results)
 
         for ent in final_results:

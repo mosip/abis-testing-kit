@@ -82,6 +82,10 @@ Matches for the jobscount field's value in response with expected value
 
 Matches for the candidateList->count field's value in response with expected value.
 
+**candidateReferenceId**
+
+Matches for the candidates reference_id field's value in response with expected value.
+
 **For example** 
 
 .expect(returnValue, 2) - response.returnValue == 2, expected [2] & actual [response.returnValue]

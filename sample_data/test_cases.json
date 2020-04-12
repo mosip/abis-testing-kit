@@ -10,7 +10,7 @@
         "testId": "**#2",
         "testDescription": "Send insert request to abis with wrong reference id for which there is no biometric file present and verify abis is returning error code.",
         "steps": [
-            "insert(person_unknown)//whats the returnValue for no cbeff found"
+            "insert(person2_unknown)"
         ]
     },
     {

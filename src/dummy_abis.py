@@ -23,12 +23,22 @@ def run_job():
                 print(str(body))
                 res_id = body['id']
                 request_id = body['requestId']
-                response = {
-                    "id": body['id'],
-                    "requestId": body['requestId'],
-                    "timestamp": str(int(time.time())),
-                    "returnValue": random.randint(1, 2)
-                }
+                ret_val = random.randint(1, 2)
+                if ret_val == 1:
+                    response = {
+                        "id": body['id'],
+                        "requestId": body['requestId'],
+                        "timestamp": str(int(time.time())),
+                        "returnValue": ret_val
+                    }
+                else:
+                    response = {
+                        "id": body['id'],
+                        "requestId": body['requestId'],
+                        "timestamp": str(int(time.time())),
+                        "returnValue": ret_val,
+                        "failureReason": random.randint(3, 9),
+                    }
                 r_status, r_body = produce(response, conf.host, conf.consume_address, conf.user, conf.password)
                 if r_status is True:
                     print(r_body)

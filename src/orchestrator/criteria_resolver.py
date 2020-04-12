@@ -1,5 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List
+
+from config.settings_override import app_config
 from orchestrator.schema_validator import validate_insert_response, validate_identify_response, \
     validate_delete_response, validate_ping_response, validate_reference_count_response
 
@@ -16,7 +18,7 @@ def criteria_resolver(test_cases: List, store: Dict):
 def analyse(test: Dict, store: Dict):
     failed = 0
     analysis = []
-    identify_exps = ['candidateListCount', 'scaledScore']
+    identify_exps = ['candidateListCount', 'candidateReferenceId']
     steps: List = test['steps']
     for idx, step in enumerate(test['steps']):
         step_failed = False
@@ -65,14 +67,17 @@ def common_criteria_resolver(expect: Dict, response: Dict):
     if etype not in response:
         passed = False
         msg = 'Response does not contain ' + etype
+        return passed, msg
     if "!" in expect['type']:
         if str(response[etype]) == evalue:
             passed = False
             msg = 'Expected ' + etype + ' [not ' + evalue + '], actual [' + str(response[etype]) + ']'
+            return passed, msg
     else:
         if str(response[etype]) != evalue:
             passed = False
             msg = 'Expected ' + etype + ' [' + evalue + '], actual [' + str(response[etype]) + ']'
+            return passed, msg
     return passed, msg
 
 
@@ -81,27 +86,49 @@ def identify_criteria_resolver(expect: Dict, response: Dict, store: Dict):
     msg = ""
     etype = expect['type'].replace("!", "")
     evalue = expect['value']
+    app_conf = app_config()
     if etype == 'candidateListCount' or etype == '!candidateListCount':
         if "candidateList" not in response:
             passed = False
             msg = 'Response does not contain candidateList'
+            return passed, msg
         if "count" not in response['candidateList']:
             passed = False
             msg = 'Response does not contain count in candidateList object'
+            return passed, msg
         if "!" in expect['type']:
             if str(response['candidateList']['count']) == evalue:
                 passed = False
                 msg = 'Expected candidateList->count [not ' + evalue + '], actual [' + str(response['candidateList']['count']) + ']'
+                return passed, msg
         else:
             if str(response['candidateList']['count']) != evalue:
                 passed = False
                 msg = 'Expected candidateList->count [' + evalue + '], actual [' + str(response['candidateList']['count']) + ']'
+                return passed, msg
 
-    if etype == 'scaledScore' or etype == '!candidateListCount':
-        if "candidateList" not in response:
-            passed = False
-            msg = 'Response does not contain candidateList'
+    if "candidateList" not in response and "count" in response['candidateList'] and response['candidateList']['count'] > 0:
+        for cands in response['candidateList']['candidates']:
+            if int(cands['scaledScore']) < int(app_conf.abis_threshold):
+                passed = False
+                msg = 'Expected scaledScore [greater than '+app_conf.abis_threshold+'], actual ['+cands['scaledScore']+']'
+                return passed, msg
 
+    if etype == 'candidateReferenceId' or etype == '!candidateReferenceId':
+        cand_found = False
+        if "candidateList" not in response and "count" in response['candidateList'] and response['candidateList']['count'] > 0:
+            if evalue in store:
+                for cands in response['candidateList']['candidates']:
+                    if cands['referenceId'] == store[evalue]['referenceId']:
+                        cand_found = True
+                if cand_found is False:
+                    passed = False
+                    msg = 'Expected ['+store[evalue]['referenceId']+'] referenceId not not found in candidates info'
+                    return passed, msg
+            else:
+                passed = False
+                msg = 'persona data does not contain '+etype+'. Possible, you have make some mistake in testcase, persona data'
+                return passed, msg
     return passed, msg
 
 

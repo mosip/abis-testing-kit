@@ -88,7 +88,7 @@ def parse_test_cases(tcs: List):
 
 def parse_step(st: str):
     step = {"method": None, "parameters": [], "expectations": []}
-    expectations = ['returnValue', 'failureReason', 'count', 'jobscount', 'candidateList', 'scaledScore']
+    expectations = ['returnValue', 'failureReason', 'count', 'jobscount', 'candidateListCount', 'candidateReferenceId']
     parameters = None
     method = None
     sts = st.split(".")
