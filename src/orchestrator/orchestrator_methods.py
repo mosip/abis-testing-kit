@@ -27,6 +27,7 @@ def extract_testdata(path: str):
     with open(test_case_file_path, 'r') as file:
         test_cases: List = json.loads(file.read())
         validate_test_cases(test_cases)
+        parse_test_cases(test_cases)
 
     with open(persona_data_file_path, 'r') as file:
         test_data: List = json.loads(file.read())
@@ -75,9 +76,10 @@ def parse_test_cases(tcs: List):
     ptcs = deepcopy(tcs)
     for tc_key, tc in enumerate(tcs):
         ptcs[tc_key]['steps'] = []
-        for st in tc['steps']:
+        for idx, st in enumerate(tc['steps']):
             try:
                 p_step = parse_step(st)
+                p_step['stepId'] = str(idx+1)
             except Exception as e:
                 raise RuntimeError('Error while parsing step: '+st+' of testcase: '+tc['testId']+'. More info --- '+str(e))
             ptcs[tc_key]['steps'].append(p_step)
@@ -85,8 +87,8 @@ def parse_test_cases(tcs: List):
 
 
 def parse_step(st: str):
-    step = {"method": None, "parameters": [], "asserts": []}
-    asserts = ['returnValue', 'count', 'jobscount', 'candidates']
+    step = {"method": None, "parameters": [], "expectations": []}
+    expectations = ['returnValue', 'failureReason', 'count', 'jobscount', 'candidateList', 'scaledScore']
     parameters = None
     method = None
     sts = st.split(".")
@@ -101,29 +103,30 @@ def parse_step(st: str):
                 parameters = [i.strip(' ') for i in found.split(',')]
             if method is None:
                 raise RuntimeError('orchestrator_methods: method not found.')
-            if method not in ['insert', 'identify', 'identify_url', 'delete', 'ping', 'reference_count']:
+            if method not in ['insert', 'identify', 'identify_ref', 'identify_url', 'delete', 'ping', 'reference_count']:
                 raise RuntimeError('orchestrator_methods: step: ' + st + ' is not a valid step')
             if parameters is None:
                 raise RuntimeError('orchestrator_methods: step: no person info found.')
             step["method"] = method
             step["parameters"] = parameters
         else:
-            m = re.search('([a-zA-Z_]*)\\(', mstr)
-            if m:
-                massert = m.group(1)
-                if massert.lower() != "assert":
-                    raise RuntimeError('orchestrator_methods: Error parsing assert: '+massert)
-            p = re.search('\\((.*)\\)', mstr)
-            if p:
-                found = p.group(1)
-                value = [i.strip(' ') for i in found.split(',')]
-                if len(value) != 2:
-                    raise RuntimeError('orchestrator_methods: assert must have a type and value.')
-                a_type = value[0]
-                if a_type not in asserts:
-                    raise RuntimeError('orchestrator_methods: : assert type can only be '+''.join(asserts))
-                exp = {"type": a_type, "value": value[1]}
-                step["asserts"].append(exp)
+            m = re.findall('((?i)expect)\\(.*\\)', mstr)
+            if len(m) == 1:
+                p = re.findall('\\((.*)\\)', mstr)
+                if len(p) == 1:
+                    found = p[0]
+                    value = [i.strip(' ') for i in found.split(',')]
+                    if len(value) != 2:
+                        raise RuntimeError('orchestrator_methods: expect must have a type and value.')
+                    a_type = value[0]
+                    if a_type not in expectations and a_type not in ('!'+s for s in expectations):
+                        raise RuntimeError('orchestrator_methods: : expectations type can only be '+''.join(expectations)+' or '+''.join(('!'+s for s in expectations)))
+                    exp = {"type": a_type, "value": value[1]}
+                    step["expectations"].append(exp)
+                else:
+                    raise RuntimeError('orchestrator_methods: Error in step syntax : ' + mstr)
+            else:
+                raise RuntimeError('orchestrator_methods: Error in step syntax : ' + mstr)
     return step
 
 

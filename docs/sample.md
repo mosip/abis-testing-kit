@@ -71,7 +71,8 @@ Results file contains brief information of the last test run, also the overall s
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
-                    "passed": "<true/ false, true if the response of ABIS is structurally correct>"
+                    "passed": "<true/ false, true if the response of ABIS is structurally correct>",
+                    "msg": "<some text to explain the reason>"
                 },
                 "passed": "<overall passed/ failed"
             },
@@ -98,7 +99,8 @@ Results file contains brief information of the last test run, also the overall s
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
-                    "passed": "<true/ false, true if the response of ABIS is structurally correct>"
+                    "passed": "<true/ false, true if the response of ABIS is structurally correct>",
+                    "msg": "<some text to explain the reason>"
                 },
                 "passed": "<overall passed/ failed"
             },
@@ -139,7 +141,8 @@ Results file contains brief information of the last test run, also the overall s
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
-                    "passed": "<true/ false, true if the response of ABIS is structurally correct>"
+                    "passed": "<true/ false, true if the response of ABIS is structurally correct>",
+                    "msg": "<some text to explain the reason>"
                 },
                 "passed": "<overall passed/ failed"
             },
@@ -165,7 +168,8 @@ Results file contains brief information of the last test run, also the overall s
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
-                    "passed": "<true/ false, true if the response of ABIS is structurally correct>"
+                    "passed": "<true/ false, true if the response of ABIS is structurally correct>",
+                    "msg": "<some text to explain the reason>"
                 },
                 "passed": "<overall passed/ failed"
             }
@@ -186,8 +190,8 @@ Results file contains brief information of the last test run, also the overall s
             }
         },
         "runResults": {
-            "failed": 3,
-            "passed": 1
+            "status": "passed",
+            "reasonsForFailure": []
         }
     }
 ]

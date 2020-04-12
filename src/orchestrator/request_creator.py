@@ -33,7 +33,7 @@ def create_insert_request(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def create_identify_request(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str]):
+def create_identify_request(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str], config: Dict):
     """ Create a identify request
 
         Keyword arguments:
@@ -43,6 +43,7 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
         gallery_reference_ids -- gallery reference ids to match with
     """
     app_conf = app_config()
+    abis_max_results = config['maxResults'] if 'maxResults' in config else app_conf.abis_max_results
     file_path = "config/identify.json"
     abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', file_path))
     print("Absolute path of " + file_path + ": " + abs_file_path)
@@ -53,7 +54,7 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
             data = data.replace('${referenceId}', reference_id)
             data = data.replace('${referenceURL}', reference_url)
             data = data.replace('${timestamp}', str(int(time.time())))
-            data = data.replace('${maxResults}', app_conf.abis_max_results)
+            data = data.replace('${maxResults}', abis_max_results)
             data = data.replace('${targetFPIR}', app_conf.abis_target_fpir)
             data = json.loads(data)
             if len(gallery_reference_ids) != 0:

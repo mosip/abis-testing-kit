@@ -4,10 +4,10 @@ import json
 import os
 import time
 import uuid
-from typing import List
+from typing import List, Dict
 
 from config.settings_override import app_config
-from orchestrator.api_methods import insert, identify, identify_url, delete, ping, reference_count
+from orchestrator.api_methods import insert, identify, identify_url, delete, ping, reference_count, identify_ref
 from orchestrator.orchestrator_methods import parse_test_cases, save_file, validate_test_data, validate_test_cases
 from orchestrator.criteria_resolver import criteria_resolver
 from testsuite.models import Tests, Logs, RequestMap
@@ -57,6 +57,10 @@ class Orchestrator:
             Logs(run_id=self.run_id, log="Test: "+ptc['testId']+" is running.").save()
             request_ids = []
             ptc['runId'] = self.run_id
+            if 'config' in ptc:
+                config = ptc['config']
+            else:
+                config = {}
             for idx, val in enumerate(ptc['steps']):
                 ptc['steps'][idx]['requestStatus'] = False
                 ptc['steps'][idx]['requestMsg'] = ''
@@ -68,10 +72,13 @@ class Orchestrator:
                     status, msg, request = self.run_insert(st, request_id)
                     ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'identify':
-                    status, msg, request = self.run_identify(st, request_id)
+                    status, msg, request = self.run_identify(st, request_id, config)
+                    ptc['steps'][idx]['requestId'] = request_id
+                elif st['method'] == 'identify_ref':
+                    status, msg, request = self.run_identify_ref(st, request_id, config)
                     ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'identify_url':
-                    status, msg, request = self.run_identify_url(st, request_id)
+                    status, msg, request = self.run_identify_url(st, request_id, config)
                     ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'delete':
                     status, msg, request = self.run_delete(st, request_id)
@@ -123,7 +130,7 @@ class Orchestrator:
         status, msg, request = insert(request_id, reference_id)
         return status, msg, request
 
-    def run_identify(self, st, request_id):
+    def run_identify(self, st, request_id: str, config: Dict):
         person = st['parameters'][0]
         reference_id = self.store[person]['reference_id']
         persons = st['parameters'][1:]
@@ -132,10 +139,10 @@ class Orchestrator:
             rid = self.store[per]
             if rid is not None:
                 ref_ids.append(rid['reference_id'])
-        status, msg, request = identify(request_id, reference_id, ref_ids)
+        status, msg, request = identify(request_id, reference_id, ref_ids, config)
         return status, msg, request
 
-    def run_identify_url(self, st, request_id):
+    def run_identify_ref(self, st, request_id: str, config: Dict):
         person = st['parameters'][0]
         reference_id = self.store[person]['reference_id']
         persons = st['parameters'][1:]
@@ -144,7 +151,19 @@ class Orchestrator:
             rid = self.store[per]
             if rid is not None:
                 ref_ids.append(rid['reference_id'])
-        status, msg, request = identify_url(request_id, reference_id, ref_ids)
+        status, msg, request = identify_ref(request_id, reference_id, ref_ids, config)
+        return status, msg, request
+
+    def run_identify_url(self, st, request_id: str, config: Dict):
+        person = st['parameters'][0]
+        reference_id = self.store[person]['reference_id']
+        persons = st['parameters'][1:]
+        ref_ids = []
+        for per in persons:
+            rid = self.store[per]
+            if rid is not None:
+                ref_ids.append(rid['reference_id'])
+        status, msg, request = identify_url(request_id, reference_id, ref_ids, config)
         return status, msg, request
 
     def run_delete(self, st, request_id):
