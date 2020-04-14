@@ -12,7 +12,7 @@ RUN apt-get update \
     && chmod +x /opt/abis-testing-kit/scripts/run.sh
 
 EXPOSE 8000
-
+EXPOSE 8161
 #CMD ["tail", "-f", "/dev/null"]
 ENTRYPOINT ["/opt/abis-testing-kit/scripts/run.sh"]
 CMD ["run"]

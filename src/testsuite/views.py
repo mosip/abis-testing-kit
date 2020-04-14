@@ -139,7 +139,7 @@ class RunStatus(View):
             return JsonResponse({"status": True, "msg": model_to_dict(test), "logs": logs})
 
 
-def get_cbeff(self, request, reference_id):
+def get_cbeff(request, reference_id):
     if os.path.exists(abs_store_path):
         for filename in os.listdir(abs_store_path):
             if filename == reference_id+'.xml':

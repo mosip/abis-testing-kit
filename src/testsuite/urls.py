@@ -30,7 +30,7 @@ urlpatterns = [
     re_path(r'^settings\W?$', settings),
     re_path(r'^settings/current\W?$', get_current_config),
     re_path(r'^settings/sample\W?$', get_sample_settings),
-    re_path(r'^setting/upload\W?$', UploadOverrideSettings.as_view()),
+    re_path(r'^settings/upload\W?$', UploadOverrideSettings.as_view()),
 
     re_path(r'^testdata\W?$', testdata),
     re_path(r'^testdata/current\W?$', get_current_testdata),
