@@ -1,43 +1,37 @@
 {
     "id" : "mosip.abis.identify",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
-    "timestamp" : "1539777717",
+    "responseTime" : "1539777717",
     "returnValue" : 1,
     "candidateList" : {
         "count" : "2",
         "candidates" : [
             {
                 "referenceId" : "x",
-                "internalScore": "4",
-                "scaledScore" : "40",
-                "analytics": [
-                    {
-                        "key1": "value1",
-                        "key2": "value2"
-                    }
-                ],
-                "scores": [
+                "analytics": {
+                    "internalScore": "112",
+                    "confidence" : "90",
+                    "key1": "value1",
+                    "key2": "value2"
+                },
+                "modalities": [
                     {
                         "biometricType": "FIR",
-                        "internalScore": "4",
-                        "scaledScore" : "40",
-                        "analytics": [
-                            {
-                                "key1": "value1",
-                                "key2": "value2"
-                            }
-                        ]
+                        "analytics": {
+                            "internalScore": "112",
+                            "confidence" : "90",
+                            "key1": "value1",
+                            "key2": "value2"
+                        }
                     },
                     {
                         "biometricType": "IIR",
-                        "internalScore": "4",
-                        "scaledScore" : "40",
-                        "analytics": [
-                            {
-                                "key1": "value1",
-                                "key2": "value2"
-                            }
-                        ]
+                        "analytics": {
+                            "internalScore": "112",
+                            "confidence" : "90",
+                            "key1": "value1",
+                            "key2": "value2"
+                        }
                     }
                 ]
             }

@@ -3,7 +3,7 @@ from typing import List, Dict
 import requests
 from requests.auth import HTTPBasicAuth
 
-from orchestrator.request_creator import create_identify_request, create_insert_request, create_delete_request, create_ping_request, create_reference_count_request
+from orchestrator.request_creator import create_identify_request, create_insert_request, create_delete_request, create_ping_request, create_pending_jobs_request, create_reference_count_request
 from config.settings_override import queue_config, app_config
 
 
@@ -65,6 +65,17 @@ def delete(request_id: str, reference_id: str):
 def ping(request_id: str):
     conf = queue_config()
     data = create_ping_request(request_id)
+    r = requests.post(conf.host + 'api/message/' + conf.send_address + '?type=queue', json=data,
+                      auth=HTTPBasicAuth(conf.user, conf.password))
+    if r.status_code == 200:
+        return True, r.text, data
+    else:
+        return False, r.text, data
+
+
+def pending_jobs(request_id: str):
+    conf = queue_config()
+    data = create_pending_jobs_request(request_id)
     r = requests.post(conf.host + 'api/message/' + conf.send_address + '?type=queue', json=data,
                       auth=HTTPBasicAuth(conf.user, conf.password))
     if r.status_code == 200:

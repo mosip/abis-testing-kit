@@ -1,6 +1,6 @@
 {
-    "id" : "mosip.abis.pendingJobs",
-    "ver" : "1.0",
+    "id" : "mosip.abis.ping",
+    "ver" : "1.1",
     "requestId" : "${requestId}",
-    "timestamp" : "${timestamp}"
+    "requestTime" : "${requestTime}"
 }

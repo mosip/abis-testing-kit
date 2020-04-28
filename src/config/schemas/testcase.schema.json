@@ -1,4 +1,5 @@
 {
+    "$comment": "testcase schema response",
     "type": "array",
     "additionalItems": false,
     "uniqueItems": true,

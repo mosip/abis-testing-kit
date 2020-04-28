@@ -1,8 +1,8 @@
 {
     "id" : "mosip.abis.insert",
-    "ver" : "1.0",
+    "ver" : "1.1",
     "requestId" : "${requestId}",
-    "timestamp" : "${timestamp}",
+    "requestTime" : "${requestTime}",
     "referenceId" : "${referenceId}",
-    "referenceURL" : "${referenceURL}"
+    "referenceUrl" : "${referenceUrl}"
 }

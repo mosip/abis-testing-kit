@@ -7,7 +7,7 @@ import uuid
 from typing import List, Dict
 
 from config.settings_override import app_config
-from orchestrator.api_methods import insert, identify, identify_url, delete, ping, reference_count, identify_ref
+from orchestrator.api_methods import insert, identify, identify_url, delete, ping, pending_jobs, reference_count, identify_ref
 from orchestrator.orchestrator_methods import parse_test_cases, save_file, validate_test_data, validate_test_cases
 from orchestrator.criteria_resolver import criteria_resolver
 from testsuite.models import Tests, Logs, RequestMap
@@ -86,6 +86,9 @@ class Orchestrator:
                 elif st['method'] == 'ping':
                     status, msg, request = self.run_ping(request_id)
                     ptc['steps'][idx]['requestId'] = request_id
+                elif st['method'] == 'pending_jobs':
+                    status, msg, request = self.run_pending_jobs(request_id)
+                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'reference_count':
                     status, msg, request = self.run_reference_count(request_id)
                     ptc['steps'][idx]['requestId'] = request_id
@@ -121,7 +124,7 @@ class Orchestrator:
         save_file(log_abs_path, final_results)
 
         for ent in final_results:
-            Logs(run_id=self.run_id, log="Test: "+ent['testId']+", result: "+str(ent['runResults'])).save()
+            Logs(run_id=self.run_id, log="Test: "+ent['testId']+", result: "+str(ent['testResults'])).save()
         return
 
     def run_insert(self, st, request_id):
@@ -175,6 +178,11 @@ class Orchestrator:
     @staticmethod
     def run_ping(request_id):
         status, msg, request = ping(request_id)
+        return status, msg, request
+
+    @staticmethod
+    def run_pending_jobs(request_id):
+        status, msg, request = pending_jobs(request_id)
         return status, msg, request
 
     @staticmethod

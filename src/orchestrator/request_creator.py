@@ -3,11 +3,11 @@ This utility provides helper functions related to ABIS APIs.
 Check the docs to know about ABIS APIs
 """
 import json
-import time
 import errno
 import os
 from typing import List, Dict
 from config.settings_override import app_config
+from orchestrator.orchestrator_methods import getTime
 
 
 def create_insert_request(request_id: str, reference_id: str):
@@ -26,8 +26,8 @@ def create_insert_request(request_id: str, reference_id: str):
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceURL}', app_conf.callback_url)
-            data = data.replace('${timestamp}', str(int(time.time())))
+            data = data.replace('${referenceUrl}', app_conf.callback_url)
+            data = data.replace('${requestTime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -53,8 +53,8 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceURL}', reference_url)
-            data = data.replace('${timestamp}', str(int(time.time())))
+            data = data.replace('${referenceUrl}', reference_url)
+            data = data.replace('${requestTime}', str(getTime()))
             data = data.replace('${maxResults}', max_results)
             data = data.replace('${targetFPIR}', target_fpir)
             data = json.loads(data)
@@ -84,7 +84,7 @@ def create_delete_request(request_id: str, reference_id: str):
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${timestamp}', str(int(time.time())))
+            data = data.replace('${requestTime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -103,7 +103,26 @@ def create_ping_request(request_id: str):
         with open(abs_file_path, 'r') as file:
             data = file.read()
             data = data.replace('${requestId}', request_id)
-            data = data.replace('${timestamp}', str(int(time.time())))
+            data = data.replace('${requestTime}', str(getTime()))
+            return json.loads(data)
+    else:
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
+
+
+def create_pending_jobs_request(request_id: str):
+    """ Create a ping request
+
+        Keyword arguments:
+        request_id -- request_id
+    """
+    file_path = "config/pending_jobs.json"
+    abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', file_path))
+    print("Absolute path of " + file_path + ": " + abs_file_path)
+    if os.path.isfile(abs_file_path):
+        with open(abs_file_path, 'r') as file:
+            data = file.read()
+            data = data.replace('${requestId}', request_id)
+            data = data.replace('${requestTime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -122,7 +141,7 @@ def create_reference_count_request(request_id: str):
         with open(abs_file_path, 'r') as file:
             data = file.read()
             data = data.replace('${requestId}', request_id)
-            data = data.replace('${timestamp}', str(int(time.time())))
+            data = data.replace('${requestTime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)

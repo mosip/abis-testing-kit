@@ -1,3 +1,4 @@
+import datetime
 import errno
 import json
 import os
@@ -87,8 +88,9 @@ def parse_test_cases(tcs: List):
 
 
 def parse_step(st: str):
+    allowed_methods = ['insert', 'identify', 'identify_ref', 'identify_url', 'delete', 'ping', 'pending_jobs', 'reference_count']
     step = {"method": None, "parameters": [], "expectations": []}
-    expectations = ['returnValue', 'failureReason', 'count', 'jobscount', 'candidateListCount', 'candidateReferenceId']
+    expectations = ['returnValue', 'failureReason', 'count', 'jobsCount', 'candidateListCount', 'candidateReferenceId']
     parameters = None
     method = None
     sts = st.split(".")
@@ -103,7 +105,7 @@ def parse_step(st: str):
                 parameters = [i.strip(' ') for i in found.split(',')]
             if method is None:
                 raise RuntimeError('orchestrator_methods: method not found.')
-            if method not in ['insert', 'identify', 'identify_ref', 'identify_url', 'delete', 'ping', 'reference_count']:
+            if method not in allowed_methods:
                 raise RuntimeError('orchestrator_methods: step: ' + st + ' is not a valid step')
             if parameters is None:
                 raise RuntimeError('orchestrator_methods: step: no person info found.')
@@ -156,3 +158,5 @@ def cleanTmp():
                 shutil.rmtree(os.path.join(root, d))
 
 
+def getTime():
+    return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")

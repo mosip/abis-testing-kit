@@ -1,4 +1,5 @@
 {
+    "$comment": "insert response",
     "type": "object",
     "additionalProperties": false,
     "properties": {
@@ -9,9 +10,8 @@
         "requestId": {
             "type": "string"
         },
-        "timestamp" : {
-            "type": "string",
-            "pattern":  "^\\d*$"
+        "responseTime" : {
+            "type": "string"
         },
         "returnValue" : {
             "type": "integer",
@@ -24,5 +24,5 @@
             "maximum": 9
         }
     },
-    "required": ["id", "requestId", "timestamp", "returnValue"]
+    "required": ["id", "requestId", "responseTime", "returnValue"]
 }

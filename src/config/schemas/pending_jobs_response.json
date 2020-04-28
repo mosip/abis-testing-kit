@@ -1,17 +1,21 @@
 {
-    "$comment": "delete response",
+    "$comment": "pending jobs response",
     "type": "object",
     "additionalProperties": false,
     "properties": {
         "id": {
             "type": "string",
-            "pattern": "^mosip.abis.delete$"
+            "pattern": "^mosip.abis.pendingJobs$"
         },
         "requestId": {
             "type": "string"
         },
         "responseTime" : {
             "type": "string"
+        },
+        "jobsCount" : {
+            "type": "string",
+            "pattern":  "^\\d*$"
         },
         "returnValue" : {
             "type": "integer",
@@ -24,5 +28,5 @@
             "maximum": 9
         }
     },
-    "required": ["id", "requestId", "responseTime", "returnValue"]
+    "required": ["id", "requestId", "responseTime", "jobsCount", "returnValue"]
 }

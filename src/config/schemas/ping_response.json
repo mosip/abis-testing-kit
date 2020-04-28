@@ -1,21 +1,17 @@
 {
+    "$comment": "ping response",
     "type": "object",
     "additionalProperties": false,
     "properties": {
         "id": {
             "type": "string",
-            "pattern": "^mosip.abis.pendingJobs$"
+            "pattern": "^mosip.abis.ping$"
         },
         "requestId": {
             "type": "string"
         },
-        "timestamp" : {
-            "type": "string",
-            "pattern":  "^\\d*$"
-        },
-        "jobscount" : {
-            "type": "string",
-            "pattern":  "^\\d*$"
+        "responseTime" : {
+            "type": "string"
         },
         "returnValue" : {
             "type": "integer",
@@ -28,5 +24,5 @@
             "maximum": 9
         }
     },
-    "required": ["id", "requestId", "timestamp", "jobscount", "returnValue"]
+    "required": ["id", "requestId", "responseTime", "returnValue"]
 }

@@ -1,7 +1,7 @@
 {
     "id" : "mosip.abis.referenceCount",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
-    "timestamp" : "1539777717",
+    "responseTime" : "1539777717",
     "count" : "10",
     "returnValue" : 1
 }

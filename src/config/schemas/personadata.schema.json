@@ -1,4 +1,5 @@
 {
+    "$comment": "persona data schema",
     "type": "array",
     "additionalItems": false,
     "items": {

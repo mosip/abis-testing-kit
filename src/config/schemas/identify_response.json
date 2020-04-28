@@ -1,9 +1,10 @@
 {
+    "$comment": "identify response",
     "type": "object",
     "required": [
         "id",
         "requestId",
-        "timestamp",
+        "responseTime",
         "returnValue"
     ],
     "additionalProperties": false,
@@ -15,9 +16,8 @@
         "requestId": {
             "type": "string"
         },
-        "timestamp": {
-            "type": "string",
-            "pattern": "^\\d*$"
+        "responseTime" : {
+            "type": "string"
         },
         "returnValue": {
             "type": "integer",
@@ -57,28 +57,18 @@
             "type": "object",
             "required": [
                 "referenceId",
-                "internalScore",
-                "scaledScore",
                 "analytics",
-                "scores"
+                "modalities"
             ],
             "additionalProperties": false,
             "properties": {
                 "referenceId": {
                     "type": "string"
                 },
-                "internalScore": {
-                    "type": "string",
-                    "pattern": "^\\d*$"
-                },
-                "scaledScore": {
-                    "type": "string",
-                    "pattern": "^\\d*$"
-                },
                 "analytics": {
                     "$ref": "#/definitions/analyticsType"
                 },
-                "scores": {
+                "modalities": {
                     "type": "array",
                     "additionalItems": false,
                     "uniqueItems": true,
@@ -86,22 +76,12 @@
                         "type": "object",
                         "required": [
                             "biometricType",
-                            "scaledScore",
-                            "internalScore",
                             "analytics"
                         ],
                         "additionalProperties": false,
                         "properties": {
                             "biometricType": {
                                 "type": "string"
-                            },
-                            "internalScore": {
-                                "type": "string",
-                                "pattern": "^\\d*$"
-                            },
-                            "scaledScore": {
-                                "type": "string",
-                                "pattern": "^\\d*$"
                             },
                             "analytics": {
                                 "$ref": "#/definitions/analyticsType"
@@ -112,12 +92,8 @@
             }
         },
         "analyticsType": {
-            "type": "array",
-            "additionalItems": false,
-            "uniqueItems": true,
-            "items": {
-                "type": "object"
-            }
+            "type": "object",
+            "additionalProperties": true
         }
     }
 }

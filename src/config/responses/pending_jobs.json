@@ -1,6 +1,7 @@
 {
-    "id" : "mosip.abis.delete",
+    "id" : "mosip.abis.ping",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
     "responseTime" : "1539777717",
+    "jobsCount": "",
     "returnValue" : 1
 }
