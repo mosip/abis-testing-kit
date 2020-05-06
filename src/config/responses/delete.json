@@ -1,6 +1,6 @@
 {
     "id" : "mosip.abis.delete",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
-    "responseTime" : "1539777717",
+    "responsetime" : "1539777717",
     "returnValue" : 1
 }

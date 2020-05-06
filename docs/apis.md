@@ -71,7 +71,7 @@ Identify biometric data of an Individual. [reference](https://github.com/mosip/d
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
     "timestamp" : "1539777717",
     "referenceId" : "987654321-89AB-CDEF-0123-456789ABCDEF",
-    "referenceUrl" : "https://mosip.io/registrationprocessor/v1/bio-dedupe/biometricfile/2cce7b7d-b58a-4466-a006-c79297281789",
+    "referenceURL" : "https://mosip.io/registrationprocessor/v1/bio-dedupe/biometricfile/2cce7b7d-b58a-4466-a006-c79297281789",
     "maxResults" : 10,
     "targetFPIR" : 30,
     "gallery" : {

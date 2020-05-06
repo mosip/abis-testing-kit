@@ -2,5 +2,5 @@
     "id" : "mosip.abis.pendingJobs",
     "ver" : "1.1",
     "requestId" : "${requestId}",
-    "requestTime" : "${requestTime}"
+    "requesttime" : "${requesttime}"
 }

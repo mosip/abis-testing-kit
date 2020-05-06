@@ -2,6 +2,6 @@
     "id" : "mosip.abis.delete",
     "ver" : "1.1",
     "requestId" : "${requestId}",
-    "requestTime" : "${requestTime}",
+    "requesttime" : "${requesttime}",
     "referenceId" : "${referenceId}"
 }

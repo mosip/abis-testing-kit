@@ -2,7 +2,7 @@
     "id" : "mosip.abis.insert",
     "ver" : "1.1",
     "requestId" : "${requestId}",
-    "requestTime" : "${requestTime}",
+    "requesttime" : "${requesttime}",
     "referenceId" : "${referenceId}",
-    "referenceUrl" : "${referenceUrl}"
+    "referenceURL" : "${referenceURL}"
 }

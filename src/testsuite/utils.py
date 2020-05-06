@@ -1,5 +1,5 @@
 import base64
-from cbeff import Biometrics
+from cbeff.biometrics import Biometrics
 
 
 def parse_biometric_file(name: str, path: str):

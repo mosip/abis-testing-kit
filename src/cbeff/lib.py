@@ -2,10 +2,12 @@
 This utility provides helper functions related to cbeff.
 Check the docs to know the final cbeff xml format
 """
-from cbeff import Biometrics
+import base64
+
+from biometrics import Biometrics
 import xml.etree.ElementTree as ET
 from typing import List, AnyStr
-from config import CBEFFConfig
+from cbeff_config import CBEFFConfig
 import datetime
 import os
 import string
@@ -93,7 +95,7 @@ def create(d: List[Biometrics], path: AnyStr):
         bdb = ET.SubElement(bir, 'BDB')
         bdb.text = biometric.file_content
 
-        # ET.dump(parent_bir)
+        ET.dump(parent_bir)
         if not os.path.exists('tmp_data'):
             os.makedirs('tmp_data')
         path = os.path.join('tmp_data', uuid + "_cbeff.xml") if path is None else path
@@ -107,6 +109,39 @@ def create(d: List[Biometrics], path: AnyStr):
     return
 
 
+def createViaFolderPath():
+    """Create a CBEFF xml from the folder structure
+
+        Keyword arguments:
+        folder_path -- folder path
+        path -- destination path where the file will be created
+    """
+    biometric_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.', 'biometric_data')
+
+    if not os.path.isdir(biometric_folder_path):
+        raise Exception("Path not found: "+biometric_folder_path)
+
+    for dirr in os.listdir(biometric_folder_path):
+        user_dir = os.path.join(biometric_folder_path, dirr)
+        if os.path.isdir(user_dir):
+            biometrics_list = []
+            for sub_dirr in os.listdir(os.path.join(biometric_folder_path, dirr)):
+                file_list = os.path.join(user_dir, sub_dirr)
+                if os.path.isfile(file_list) and sub_dirr.endswith('.jpeg'):
+                    strs = sub_dirr.split('.')[0].split("_")
+                    if len(strs) != 2:
+                        return False, None, "filename should be <Biometric type>_<Biometric subtype>"
+
+                    with open(file_list, 'rb') as file:
+                        data = file.read()
+                        data = base64.b64encode(data).decode('utf-8')
+                    biometric = Biometrics(strs[0], strs[1], data)
+                    biometrics_list.append(biometric)
+            print(user_dir)
+            create(biometrics_list, os.path.join(user_dir, dirr+'_cbeff.xml'))
+    return
+
+
 def validate(self, path: AnyStr) -> bool:
     """Validate a CBEFF xml file and return true (if valid)/ false (if invalid)
 
@@ -114,3 +149,7 @@ def validate(self, path: AnyStr) -> bool:
         path -- path of the file to be validated
     """
     return True
+
+
+if __name__ == '__main__':
+    createViaFolderPath()

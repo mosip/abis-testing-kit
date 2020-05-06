@@ -1,6 +1,6 @@
 {
     "id" : "mosip.abis.insert",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
-    "responseTime" : "2020-03-29T07:01:24.692Z",
+    "responsetime" : "2020-03-29T07:01:24.692Z",
     "returnValue" : 1
 }

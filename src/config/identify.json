@@ -2,12 +2,11 @@
     "id" : "mosip.abis.identify",
     "ver" : "1.1",
     "requestId" : "${requestId}",
-    "requestTime" : "${timestamp}",
+    "requesttime" : "${requesttime}",
     "referenceId" : "${referenceId}",
-    "referenceUrl" : "${referenceUrl}",
     "flags": {
         "maxResults" : "${maxResults}",
-        "targetFpir" : "${targetFpir}"
+        "targetFPIR" : "${targetFPIR}"
     },
     "gallery" : {
 

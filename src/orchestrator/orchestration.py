@@ -7,7 +7,7 @@ import uuid
 from typing import List, Dict
 
 from config.settings_override import app_config
-from orchestrator.api_methods import insert, identify, identify_url, delete, ping, pending_jobs, reference_count, identify_ref
+from orchestrator.api_methods import insert, identify, delete, ping, pending_jobs, reference_count
 from orchestrator.orchestrator_methods import parse_test_cases, save_file, validate_test_data, validate_test_cases
 from orchestrator.criteria_resolver import criteria_resolver
 from testsuite.models import Tests, Logs, RequestMap
@@ -74,12 +74,6 @@ class Orchestrator:
                 elif st['method'] == 'identify':
                     status, msg, request = self.run_identify(st, request_id, config)
                     ptc['steps'][idx]['requestId'] = request_id
-                elif st['method'] == 'identify_ref':
-                    status, msg, request = self.run_identify_ref(st, request_id, config)
-                    ptc['steps'][idx]['requestId'] = request_id
-                elif st['method'] == 'identify_url':
-                    status, msg, request = self.run_identify_url(st, request_id, config)
-                    ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'delete':
                     status, msg, request = self.run_delete(st, request_id)
                     ptc['steps'][idx]['requestId'] = request_id
@@ -143,30 +137,6 @@ class Orchestrator:
             if rid is not None:
                 ref_ids.append(rid['reference_id'])
         status, msg, request = identify(request_id, reference_id, ref_ids, config)
-        return status, msg, request
-
-    def run_identify_ref(self, st, request_id: str, config: Dict):
-        person = st['parameters'][0]
-        reference_id = self.store[person]['reference_id']
-        persons = st['parameters'][1:]
-        ref_ids = []
-        for per in persons:
-            rid = self.store[per]
-            if rid is not None:
-                ref_ids.append(rid['reference_id'])
-        status, msg, request = identify_ref(request_id, reference_id, ref_ids, config)
-        return status, msg, request
-
-    def run_identify_url(self, st, request_id: str, config: Dict):
-        person = st['parameters'][0]
-        reference_id = self.store[person]['reference_id']
-        persons = st['parameters'][1:]
-        ref_ids = []
-        for per in persons:
-            rid = self.store[per]
-            if rid is not None:
-                ref_ids.append(rid['reference_id'])
-        status, msg, request = identify_url(request_id, reference_id, ref_ids, config)
         return status, msg, request
 
     def run_delete(self, st, request_id):

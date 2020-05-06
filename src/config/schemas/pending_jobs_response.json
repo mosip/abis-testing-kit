@@ -10,10 +10,10 @@
         "requestId": {
             "type": "string"
         },
-        "responseTime" : {
+        "responsetime" : {
             "type": "string"
         },
-        "jobsCount" : {
+        "jobscount" : {
             "type": "string",
             "pattern":  "^\\d*$"
         },
@@ -28,5 +28,5 @@
             "maximum": 9
         }
     },
-    "required": ["id", "requestId", "responseTime", "jobsCount", "returnValue"]
+    "required": ["id", "requestId", "responsetime", "jobscount", "returnValue"]
 }

@@ -10,7 +10,7 @@
         "requestId": {
             "type": "string"
         },
-        "responseTime" : {
+        "responsetime" : {
             "type": "string"
         },
         "count" : {
@@ -28,5 +28,5 @@
             "maximum": 9
         }
     },
-    "required": ["id", "requestId", "responseTime", "count", "returnValue"]
+    "required": ["id", "requestId", "responsetime", "count", "returnValue"]
 }

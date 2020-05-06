@@ -112,13 +112,6 @@ def identify_criteria_resolver(expect: Dict, response: Dict, store: Dict):
                     msg = 'Expected candidateList->count [' + evalue + '], actual [' + str(response['candidateList']['count']) + ']'
                     return passed, msg
 
-        if "candidateList" not in response and "count" in response['candidateList'] and response['candidateList']['count'] > 0:
-            for cands in response['candidateList']['candidates']:
-                if int(cands['scaledScore']) < int(app_conf.abis_threshold):
-                    passed = False
-                    msg = 'Expected scaledScore [greater than '+app_conf.abis_threshold+'], actual ['+cands['scaledScore']+']'
-                    return passed, msg
-
         if etype == 'candidateReferenceId' or etype == '!candidateReferenceId':
             cand_found = False
             if "candidateList" not in response and "count" in response['candidateList'] and response['candidateList']['count'] > 0:
@@ -148,8 +141,6 @@ def response_validator(test: Dict):
             if step['method'] == 'insert':
                 status, msg = validate_insert_response(step['response'])
             elif step['method'] == 'identify':
-                status, msg = validate_identify_response(step['response'])
-            elif step['method'] == 'identify_url':
                 status, msg = validate_identify_response(step['response'])
             elif step['method'] == 'delete':
                 status, msg = validate_delete_response(step['response'])

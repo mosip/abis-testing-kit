@@ -26,14 +26,14 @@ def create_insert_request(request_id: str, reference_id: str):
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceUrl}', app_conf.callback_url)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${referenceURL}',  app_config().callback_url+reference_id)
+            data = data.replace('${requesttime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def create_identify_request(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str], config: Dict):
+def create_identify_request(request_id: str, reference_id: str, gallery_reference_ids: List[str], config: Dict):
     """ Create a identify request
 
         Keyword arguments:
@@ -53,8 +53,7 @@ def create_identify_request(request_id: str, reference_id: str, reference_url: s
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${referenceUrl}', reference_url)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${requesttime}', str(getTime()))
             data = data.replace('${maxResults}', max_results)
             data = data.replace('${targetFPIR}', target_fpir)
             data = json.loads(data)
@@ -84,7 +83,7 @@ def create_delete_request(request_id: str, reference_id: str):
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${requesttime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -103,7 +102,7 @@ def create_ping_request(request_id: str):
         with open(abs_file_path, 'r') as file:
             data = file.read()
             data = data.replace('${requestId}', request_id)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${requesttime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -122,7 +121,7 @@ def create_pending_jobs_request(request_id: str):
         with open(abs_file_path, 'r') as file:
             data = file.read()
             data = data.replace('${requestId}', request_id)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${requesttime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
@@ -141,7 +140,7 @@ def create_reference_count_request(request_id: str):
         with open(abs_file_path, 'r') as file:
             data = file.read()
             data = data.replace('${requestId}', request_id)
-            data = data.replace('${requestTime}', str(getTime()))
+            data = data.replace('${requesttime}', str(getTime()))
             return json.loads(data)
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)

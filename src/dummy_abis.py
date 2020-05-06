@@ -27,14 +27,14 @@ def run_job():
                     response = {
                         "id": body['id'],
                         "requestId": body['requestId'],
-                        "responseTime": str(getTime()),
+                        "responsetime": str(getTime()),
                         "returnValue": ret_val
                     }
                 else:
                     response = {
                         "id": body['id'],
                         "requestId": body['requestId'],
-                        "responseTime": str(getTime()),
+                        "responsetime": str(getTime()),
                         "returnValue": ret_val,
                         "failureReason": random.randint(3, 9),
                     }

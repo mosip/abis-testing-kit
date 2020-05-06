@@ -4,7 +4,7 @@
     "required": [
         "id",
         "requestId",
-        "responseTime",
+        "responsetime",
         "returnValue"
     ],
     "additionalProperties": false,
@@ -16,7 +16,7 @@
         "requestId": {
             "type": "string"
         },
-        "responseTime" : {
+        "responsetime" : {
             "type": "string"
         },
         "returnValue": {
