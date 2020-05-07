@@ -4,6 +4,7 @@
     "requestId" : "${requestId}",
     "requesttime" : "${requesttime}",
     "referenceId" : "${referenceId}",
+    "referenceURL" : "${referenceURL}",
     "flags": "${flags}",
     "gallery" : {
 

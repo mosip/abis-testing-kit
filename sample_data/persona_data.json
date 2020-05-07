@@ -1,70 +1,70 @@
 [
-  {
-    "name": "person1",
-    "reference_id": "r1"
-  },
-  {
-    "name": "person2_unknown",
-    "reference_id": "no_cbeff_egegej3k53u9mf93859v390v3"
-  },
-  {
-    "name": "person3_no_reference_id",
-    "reference_id": ""
-  },
-  {
-    "name": "person4",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person5",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person5_duplicate_1",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person6",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person6_duplicate_1",
-    "reference_id": "<cbeff reqd>"
-  },
     {
-    "name": "person6_duplicate_2",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person7",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person7_duplicate_1",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person7_duplicate_2",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person8_no_reference_id",
-    "reference_id": ""
-  },
-  {
-    "name": "person9",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person10",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person11",
-    "reference_id": "<cbeff reqd>"
-  },
-  {
-    "name": "person12_without_cbeff",
-    "reference_id": "any_reference_id_that_is_not_inserted"
-  }
+        "name": "person1",
+        "reference_id": "r1"
+    },
+    {
+        "name": "person2_unknown",
+        "reference_id": "no_cbeff_egegej3k53u9mf93859v390v3"
+    },
+    {
+        "name": "person3_no_reference_id",
+        "reference_id": ""
+    },
+    {
+        "name": "person4",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person5",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person5_duplicate_1",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person6",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person6_duplicate_1",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person6_duplicate_2",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person7",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person7_duplicate_1",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person7_duplicate_2",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person8_no_reference_id",
+        "reference_id": ""
+    },
+    {
+        "name": "person9",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person10",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person11",
+        "reference_id": "<cbeff reqd>"
+    },
+    {
+        "name": "person12_without_cbeff",
+        "reference_id": "any_reference_id_that_is_not_inserted"
+    }
 ]

@@ -33,7 +33,7 @@ def create_insert_request(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def create_identify_request(request_id: str, reference_id: str, gallery_reference_ids: List[str], flags: Dict):
+def create_identify_request(request_id: str, reference_id: str, reference_url: str, gallery_reference_ids: List[str], flags: Dict):
     """ Create a identify request
 
         Keyword arguments:
@@ -49,6 +49,7 @@ def create_identify_request(request_id: str, reference_id: str, gallery_referenc
             data = file.read()
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
+            data = data.replace('${referenceURL}', reference_url)
             data = data.replace('${requesttime}', str(getTime()))
             data = data.replace('"${flags}"', json.dumps(flags))
             data = json.loads(data)

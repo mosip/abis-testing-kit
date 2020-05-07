@@ -17,7 +17,23 @@ A test case json file contains an array of test object that contains the necessa
 
 **identify(persona_1, persona_2, persona_3,..,...)**
 
+* sends an identify request to the queue with the reference id and reference url of person_1
+* gallery of reference ids of persona_2, persona_3,...
+* if only persona_1 is provided, then it will send no gallery and the match will happen with all inserted data
+
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#identify)
+
+**identify_ref(persona_1, persona_2, persona_3,..,...)**
+
 * sends an identify request to the queue with the reference id of person_1
+* gallery of reference ids of persona_2, persona_3,...
+* if only persona_1 is provided, then it will send no gallery and the match will happen with all inserted data
+
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#identify)
+
+**identify_url(persona_1, persona_2, persona_3,..,...)**
+
+* sends an identify request to the queue with the reference url of person_1
 * gallery of reference ids of persona_2, persona_3,...
 * if only persona_1 is provided, then it will send no gallery and the match will happen with all inserted data
 

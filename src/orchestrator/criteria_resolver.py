@@ -142,6 +142,10 @@ def response_validator(test: Dict):
                 status, msg = validate_insert_response(step['response'])
             elif step['method'] == 'identify':
                 status, msg = validate_identify_response(step['response'])
+            elif step['method'] == 'identify_ref':
+                status, msg = validate_identify_response(step['response'])
+            elif step['method'] == 'identify_url':
+                status, msg = validate_identify_response(step['response'])
             elif step['method'] == 'delete':
                 status, msg = validate_delete_response(step['response'])
             elif step['method'] == 'ping':

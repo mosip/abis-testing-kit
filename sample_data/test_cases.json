@@ -1,5 +1,5 @@
 [
-   {
+    {
         "testId": "#1",
         "testDescription": "Send insert request to abis and verify the record is inserted correctly.",
         "steps": [
@@ -24,21 +24,27 @@
         "testId": "#4",
         "testDescription": "Send unique identify request with maxResults, targetFPIR set in configuration. Set gallery match as null and abis should be able to identify the record against all other records present inside db.",
         "steps": [
-            "insert(person4)", "identify(person4).expect(candidateListCount, 0)"
+            "insert(person4)",
+            "identify_ref(person4).expect(candidateListCount, 0)"
         ]
     },
     {
         "testId": "**#5",
         "testDescription": "Send identify request for a biometric which is duplicate against another record. Set gallery match as null and abis should be able to identify the record against all other records present inside db.",
         "steps": [
-            "insert(person5)", "insert(person5_duplicate_1)", "identify(person5_duplicate_1).expect(candidateListCount, 1).expect(candidateReferenceId, person5)"
+            "insert(person5)",
+            "insert(person5_duplicate_1)",
+            "identify_ref(person5_duplicate_1).expect(candidateListCount, 1).expect(candidateReferenceId, person5)"
         ]
     },
     {
         "testId": "#6",
         "testDescription": "Send identify request for a biometric which is duplicate against another 2 records. Set gallery match as the first duplicate candidate id and abis should be able to identify the record only against the candidate present in gallery.",
         "steps": [
-            "insert(person6)", "insert(person6_duplicate_1)", "insert(person6_duplicate_2)", "identify(person6_duplicate_2, person6).expect(candidateListCount, 1).expect(candidateReferenceId, person6)"
+            "insert(person6)",
+            "insert(person6_duplicate_1)",
+            "insert(person6_duplicate_2)",
+            "identify_ref(person6_duplicate_2, person6).expect(candidateListCount, 1).expect(candidateReferenceId, person6)"
         ]
     },
     {
@@ -48,32 +54,54 @@
         },
         "testDescription": "Send identify request for a biometric which is duplicate against another 2 records. Set maxResults as 1.",
         "steps": [
-            "insert(person7)", "insert(person7_duplicate_1)", "insert(person7_duplicate_2)", "identify(person7_duplicate_2).expect(candidateListCount, 1).expect(candidateReferenceId, person7)"
+            "insert(person7)",
+            "insert(person7_duplicate_1)",
+            "insert(person7_duplicate_2)",
+            "identify_ref(person7_duplicate_2).expect(candidateListCount, 1).expect(candidateReferenceId, person7)"
         ]
     },
     {
         "testId": "#8",
-        "testDescription": "Send identify request with reference id as null.",
+        "testDescription": "Send identify request with reference id and reference url both as null.",
         "steps": [
-            "identify(person8_no_reference_id).expect(returnValue, 2).expect(failureReason, 5)"
+            "identify_ref(person8_no_reference_id).expect(returnValue, 2).expect(failureReason, 5)"
         ]
     },
     {
-        "testId": "#9",
+        "testId": "**#9",
+        "testDescription": "Send identify request with reference id as null and correct reference url.",
+        "steps": [
+            "identify_url(person9)"
+        ],
+        "comments": "if we send empty reference id, will it work"
+    },
+    {
+        "testId": "**#10",
+        "testDescription": "Send identify request with correct reference id and wrong reference url. Make sure if reference id is already present inside abis, it will not call reference url to get the cbeff file. Instead it will compare against the cbeff file stored inside abis.",
+        "steps": [
+            "insert(person10)",
+            "identify_ref(person10)"
+        ],
+        "comments": "if we send empty reference url, will it work"
+    },
+    {
+        "testId": "#11",
         "testDescription": "Send delete request with correct request id and reference id.",
         "steps": [
-            "insert(person11)", "delete(person11)", "identify(person11).expect(!returnValue, 1)"
+            "insert(person11)",
+            "delete(person11)",
+            "identify(person11).expect(!returnValue, 1)"
         ]
     },
     {
-        "testId": "#10",
+        "testId": "#12",
         "testDescription": "Send delete request with wrong reference id.",
         "steps": [
             "delete(person12_without_cbeff).expect(returnValue, 2)"
         ]
     },
     {
-        "testId": "#11",
+        "testId": "#13",
         "testDescription": "Send ping request with request id.",
         "steps": [
             "ping()"

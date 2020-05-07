@@ -22,7 +22,7 @@ def run_job():
             if status is True:
                 print("Message found")
                 print(str(body))
-                ret_val = random.randint(1, 2)
+                ret_val = str(random.randint(1, 2))
                 if ret_val == 1:
                     response = {
                         "id": body['id'],
@@ -36,7 +36,7 @@ def run_job():
                         "requestId": body['requestId'],
                         "responsetime": str(getTime()),
                         "returnValue": ret_val,
-                        "failureReason": random.randint(3, 9),
+                        "failureReason": str(random.randint(3, 9)),
                     }
                 r_status, r_body = produce(response, conf.host, conf.consume_address, conf.user, conf.password)
                 if r_status is True:
