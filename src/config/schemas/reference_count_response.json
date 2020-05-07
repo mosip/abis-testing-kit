@@ -18,14 +18,10 @@
             "pattern":  "^\\d*$"
         },
         "returnValue" : {
-            "type": "integer",
-            "minimum":  0,
-            "maximum": 9
+            "type": "string"
         },
         "failureReason": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9
+            "type": "string"
         }
     },
     "required": ["id", "requestId", "responsetime", "count", "returnValue"]

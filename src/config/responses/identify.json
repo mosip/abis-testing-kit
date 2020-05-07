@@ -2,7 +2,7 @@
     "id" : "mosip.abis.identify",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
     "responsetime" : "1539777717",
-    "returnValue" : 1,
+    "returnValue" : "1",
     "candidateList" : {
         "count" : "2",
         "candidates" : [

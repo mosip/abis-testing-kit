@@ -19,15 +19,11 @@
         "responsetime" : {
             "type": "string"
         },
-        "returnValue": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9
+        "returnValue" : {
+            "type": "string"
         },
         "failureReason": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 9
+            "type": "string"
         },
         "candidateList": {
             "type": "object",
