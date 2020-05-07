@@ -42,27 +42,20 @@
 * Verify candidate list has one candidate with count as 1. Verify the candidate referenceId is expected referenceId (the first duplicate candidate id and not the second one).
 * Verify the scaled score is greater then configured threshold in configuration.
 
-#### 8) Send identify request with reference id and reference url both as null.
+#### 8) Send identify request with reference id as null.
 
 * Verify abis should send returnValue as 2.
 * Verify failure reason 5
 
-#### 9) Send identify request with reference id as null and correct reference url.
-
-* Verify abis should be able to perform dedupe by getting the cbeff from reference URL.
-* Verify abis should send returnValue as 1.
-
-#### 10) Send identify request with correct reference id and wrong reference url. Make sure if reference id is already present inside abis, it will not call reference url to get the cbeff file. Instead it will compare against the cbeff file stored inside abis.
-
-#### 11) Send delete request with correct request id and reference id.
+#### 9) Send delete request with correct request id and reference id.
 
 * ABIS should be able to delete the record successfully.
 * Try to send identify request for the reference id and it should fail in ABIS since the record was deleted earlier.
 
-#### 12) Send delete request with wrong reference id.
+#### 10) Send delete request with wrong reference id.
 
 * ABIS should send return value as 2 with failure reason.
 
-#### 13) Send ping request with request id.
+#### 11) Send ping request with request id.
 
 * ABIS should respond with return value 1.

@@ -33,18 +33,14 @@ def create_insert_request(request_id: str, reference_id: str):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
 
 
-def create_identify_request(request_id: str, reference_id: str, gallery_reference_ids: List[str], config: Dict):
+def create_identify_request(request_id: str, reference_id: str, gallery_reference_ids: List[str], flags: Dict):
     """ Create a identify request
 
         Keyword arguments:
         request_id -- request_id
         reference_id -- reference_id
-        reference_url -- reference_url
         gallery_reference_ids -- gallery reference ids to match with
     """
-    app_conf = app_config()
-    max_results = config['maxResults'] if 'maxResults' in config else app_conf.abis_max_results
-    target_fpir = config['targetFPIR'] if 'targetFPIR' in config else app_conf.abis_target_fpir
     file_path = "config/identify.json"
     abs_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), './../', file_path))
     print("Absolute path of " + file_path + ": " + abs_file_path)
@@ -54,12 +50,10 @@ def create_identify_request(request_id: str, reference_id: str, gallery_referenc
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
             data = data.replace('${requesttime}', str(getTime()))
-            data = data.replace('${maxResults}', max_results)
-            data = data.replace('${targetFPIR}', target_fpir)
+            data = data.replace('${flags}', str(flags))
             data = json.loads(data)
             if len(gallery_reference_ids) != 0:
                 data["gallery"] = {"referenceIds": []}
-                ph_gallery_reference_ids = []
                 for gallery_reference_id in gallery_reference_ids:
                     data["gallery"]["referenceIds"].append({"referenceId": gallery_reference_id})
 

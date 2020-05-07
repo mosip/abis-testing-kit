@@ -4,10 +4,7 @@
     "requestId" : "${requestId}",
     "requesttime" : "${requesttime}",
     "referenceId" : "${referenceId}",
-    "flags": {
-        "maxResults" : "${maxResults}",
-        "targetFPIR" : "${targetFPIR}"
-    },
+    "flags": "${flags}",
     "gallery" : {
 
     }

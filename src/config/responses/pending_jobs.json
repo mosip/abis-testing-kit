@@ -1,5 +1,5 @@
 {
-    "id" : "mosip.abis.ping",
+    "id" : "mosip.abis.pendingJobs",
     "requestId" : "01234567-89AB-CDEF-0123-456789ABCDEF",
     "responsetime" : "1539777717",
     "jobscount": "",

@@ -60,14 +60,14 @@ Results file contains brief information of the last test run, also the overall s
                     "id": "mosip.abis.insert",
                     "ver": "1.0",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "requesttime": "<requesttime>",
                     "referenceId": "r1",
                     "referenceURL": "http://localhost:8000/get_cbeff/"
                 },
                 "response": {
                     "id": "mosip.abis.insert",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "responsetime": "<responsetime>",
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
@@ -88,14 +88,14 @@ Results file contains brief information of the last test run, also the overall s
                     "id": "mosip.abis.insert",
                     "ver": "1.0",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "requesttime": "<requesttime>",
                     "referenceId": "r2",
                     "referenceURL": "http://localhost:8000/get_cbeff/"
                 },
                 "response": {
                     "id": "mosip.abis.insert",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "responsetime": "<responsetime>",
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
@@ -118,11 +118,13 @@ Results file contains brief information of the last test run, also the overall s
                     "id": "mosip.abis.identify",
                     "ver": "1.0",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "requesttime": "<requesttime>",
                     "referenceId": "r3",
                     "referenceURL": "",
-                    "maxResults": "30",
-                    "targetFPIR": "30",
+                    "flags": {
+                        "maxResults": "30",
+                        "targetFPIR": "30"
+                    },
                     "gallery": {
                         "referenceIds": [
                             {
@@ -137,7 +139,8 @@ Results file contains brief information of the last test run, also the overall s
                 "response": {
                     "id": "mosip.abis.identify",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "responsetime": "<responsetime>",
+                    "candidateList": [],
                     "returnValue": 1
                 },
                 "responseStructureValidation": {
@@ -158,13 +161,13 @@ Results file contains brief information of the last test run, also the overall s
                     "id": "mosip.abis.delete",
                     "ver": "1.0",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "requesttime": "<requesttime>",
                     "referenceId": "r3"
                 },
                 "response": {
                     "id": "mosip.abis.delete",
                     "requestId": "<id of the request>",
-                    "timestamp": "<timestamp>",
+                    "responsetime": "<responsetime>",
                     "returnValue": 1
                 },
                 "responseStructureValidation": {

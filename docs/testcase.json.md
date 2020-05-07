@@ -13,7 +13,7 @@ A test case json file contains an array of test object that contains the necessa
 * sends an insert request to the queue with the reference id of the persona. 
 * callback url will be sent in request from which the ABIS will fetch cbeff associated with the persona
 
-[know more about request](./../docs/apis.md#Insert)
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#insert)
 
 **identify(persona_1, persona_2, persona_3,..,...)**
 
@@ -21,33 +21,31 @@ A test case json file contains an array of test object that contains the necessa
 * gallery of reference ids of persona_2, persona_3,...
 * if only persona_1 is provided, then it will send no gallery and the match will happen with all inserted data
 
-[know more about request](./../docs/apis.md#Identify)
-
-**identify_url(persona_1, persona_2, persona_3,..,...)**
-
-* sends an identify request to the queue with the reference url of person_1
-* gallery of reference ids of persona_2, persona_3,...
-* if only persona_1 is provided, then it will send no gallery and the match will happen with all inserted data
-
-[know more about request](./../docs/apis.md#Identify)
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#identify)
 
 **delete(persona_1)**
 
 * sends an delete request to the queue with the reference id of person_1
 
-[know more about request](./../docs/apis.md#Delete)
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#delete)
 
 **ping**
 
-* sends an ping request to the queue to get pending Jobs count
+* sends an ping request to the queue to get service status
 
-[know more about request](./../docs/apis.md#Ping)
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#ping)
+
+**pending_jobs**
+
+* sends pending_jobs request to the queue to get pending Jobs count
+
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#pending-jobs)
 
 **reference_count**
 
 * sends an reference_count request to the queue
 
-[know more about request](./../docs/apis.md#Reference count)
+[know more about request](https://mosipdocs.gitbook.io/platform/functionalities/apis/abis-apis#reference-count)
 
 ### Expectations:
 You can add expectation to a step by adding "expect(<type>, <value>)"
@@ -58,33 +56,45 @@ type can be:
 * count (applicable only for ping)
 * jobscount (applicable only for reference_count)
 * candidateListCount (applicable only for identify, identify_url)
+* candidateReferenceId (applicable only for identify, identify_url)
 
 value is the expected value. 
 
-
 **returnValue**
 
-Matches for the returnValue field's value in response with expected value
+Matches for the returnValue field's value in response with expected value.
+
+Example: expect(returnValue, 1)
 
 **failureReason**
 
-Matches for the failureReason field's value in response with expected value
+Matches for the failureReason field's value in response with expected value.
+
+Example: expect(failureReason, 7)
 
 **count**
 
 Matches for the count field's value in response with expected value
 
+Example: expect(count, 10)
+
 **jobscount**
 
 Matches for the jobscount field's value in response with expected value
+
+Example: expect(jobscount, 10)
 
 **candidateListCount**
 
 Matches for the candidateList->count field's value in response with expected value.
 
+Example: expect(candidateListCount, 2)
+
 **candidateReferenceId**
 
 Matches for the candidates reference_id field's value in response with expected value.
+
+Example: expect(candidateReferenceId, person1)
 
 **For example** 
 
