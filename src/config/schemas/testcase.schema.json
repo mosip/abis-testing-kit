@@ -11,7 +11,7 @@
             "testId": {
                 "type": "string"
             },
-            "config": {
+            "flags": {
                 "type": "object"
             },
             "comments": {

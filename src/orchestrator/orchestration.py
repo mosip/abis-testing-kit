@@ -57,10 +57,10 @@ class Orchestrator:
             Logs(run_id=self.run_id, log="Test: "+ptc['testId']+" is running.").save()
             request_ids = []
             ptc['runId'] = self.run_id
-            if 'config' in ptc:
-                config = ptc['config']
+            if 'flags' in ptc:
+                flags = ptc['flags']
             else:
-                config = {}
+                flags = {}
             for idx, val in enumerate(ptc['steps']):
                 ptc['steps'][idx]['requestStatus'] = False
                 ptc['steps'][idx]['requestMsg'] = ''
@@ -72,7 +72,7 @@ class Orchestrator:
                     status, msg, request = self.run_insert(st, request_id)
                     ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'identify':
-                    status, msg, request = self.run_identify(st, request_id, config)
+                    status, msg, request = self.run_identify(st, request_id, flags)
                     ptc['steps'][idx]['requestId'] = request_id
                 elif st['method'] == 'delete':
                     status, msg, request = self.run_delete(st, request_id)
@@ -127,7 +127,7 @@ class Orchestrator:
         status, msg, request = insert(request_id, reference_id)
         return status, msg, request
 
-    def run_identify(self, st, request_id: str, config: Dict):
+    def run_identify(self, st, request_id: str, flags: Dict):
         person = st['parameters'][0]
         reference_id = self.store[person]['reference_id']
         persons = st['parameters'][1:]
@@ -136,7 +136,7 @@ class Orchestrator:
             rid = self.store[per]
             if rid is not None:
                 ref_ids.append(rid['reference_id'])
-        status, msg, request = identify(request_id, reference_id, ref_ids, config)
+        status, msg, request = identify(request_id, reference_id, ref_ids, flags)
         return status, msg, request
 
     def run_delete(self, st, request_id):

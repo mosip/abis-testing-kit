@@ -50,7 +50,7 @@ def create_identify_request(request_id: str, reference_id: str, gallery_referenc
             data = data.replace('${requestId}', request_id)
             data = data.replace('${referenceId}', reference_id)
             data = data.replace('${requesttime}', str(getTime()))
-            data = data.replace('${flags}', str(flags))
+            data = data.replace('"${flags}"', json.dumps(flags))
             data = json.loads(data)
             if len(gallery_reference_ids) != 0:
                 data["gallery"] = {"referenceIds": []}
