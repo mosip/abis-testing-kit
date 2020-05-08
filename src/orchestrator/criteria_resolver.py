@@ -21,8 +21,6 @@ def analyse(test: Dict, store: Dict):
     identify_exps = ['candidateListCount', 'candidateReferenceId']
     steps: List = test['steps']
     for idx, step in enumerate(test['steps']):
-        step_failed = False
-        test['steps'][idx]['passed'] = True
         if step['passed'] is True:
             if len(step['expectations']) > 0:
                 for aexp in step['expectations']:

@@ -9,7 +9,7 @@ abs_settings_path = os.path.abspath(
             os.path.join(os.path.dirname(os.path.abspath(__file__)), './settings.json'))
 print(abs_settings_path)
 queue = namedtuple('Queue', 'host, user, password, send_address, consume_address, client_id')
-app = namedtuple('App', 'callback_url, abis_max_results, abis_target_fpir, abis_response_timeout, abis_threshold')
+app = namedtuple('App', 'callback_url, abis_response_timeout, abis_threshold')
 
 
 def queue_config() -> queue:
@@ -35,8 +35,6 @@ def app_config() -> app:
             properties: Dict = json.loads(file.read())
     a = app(
         properties["atk.app.callback_url"] if "atk.app.callback_url" in properties else AppConfig.callback_url,
-        properties["atk.app.abis_max_results"] if "atk.app.abis_max_results" in properties else AppConfig.abis_max_results,
-        properties["atk.app.abis_target_fpir"] if "atk.app.abis_target_fpir" in properties else AppConfig.abis_target_fpir,
         properties["atk.app.abis_response_timeout"] if "atk.app.abis_response_timeout" in properties else AppConfig.abis_response_timeout,
         properties["atk.app.abis_threshold"] if "atk.app.abis_threshold" in properties else AppConfig.abis_threshold
     )

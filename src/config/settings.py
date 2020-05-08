@@ -30,8 +30,6 @@ class QueueConfig:
 class AppConfig:
     """ App config """
     callback_url = os.getenv("atk.app.callback_url")  # default 'http://localhost:8000/'
-    abis_max_results = os.getenv("atk.app.abis_max_results")  # default 30
-    abis_target_fpir = os.getenv("atk.app.abis_target_fpir")  # default 30
     abis_response_timeout = os.getenv("atk.app.abis_response_timeout")
     abis_threshold = os.getenv("atk.app.abis_threshold")
 
