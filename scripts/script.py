@@ -23,7 +23,7 @@ print(args)
 
 def build_image():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'build', '-t', 'abis-testing-kit', './../'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'build', '-t', 'abis-testing-kit', './../'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -38,7 +38,7 @@ def build_image():
 
 def create_container():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'create', '--name', 'abis-testing-kit', '-p', '8000:8000', '--log-driver', 'json-file', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'create', '--name', 'abis-testing-kit', '-p', '8000:8000', '--log-driver', 'json-file', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -53,7 +53,7 @@ def create_container():
 
 def start_container():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'start', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'start', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -68,7 +68,7 @@ def start_container():
 
 def stop_container():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'stop', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'stop', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -83,7 +83,7 @@ def stop_container():
 
 def remove_container():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'rm', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'rm', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -98,7 +98,7 @@ def remove_container():
 
 def remove_image():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'rmi', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'rmi', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
@@ -113,7 +113,7 @@ def remove_image():
 
 def logs():
     try:
-        ds = subprocess.Popen(['sudo', 'docker', 'logs', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        ds = subprocess.Popen(['docker', 'logs', 'abis-testing-kit'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         logging.error(ds.stderr)
         while True:
             output = ds.stdout.readline()
