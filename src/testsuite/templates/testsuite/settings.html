@@ -79,7 +79,7 @@
             <div class="card w-50 mb-5">
                 <div class="card-body">
                     <button type="button" class="btn btn-info md m-auto" onclick="get_settings()">Current settings</button>
-                    <button type="button" class="btn btn-secondary md m-auto" onclick="window.location.href='/settings/sample'">Sample settings file</button>
+                    <button type="button" class="btn btn-secondary md m-auto" onclick="window.location.href='/abis/settings/sample'">Sample settings file</button>
                     <div class="col-12 pt-3 pb-3">
                         <pre id="config_view"></pre>
                     </div>
@@ -107,7 +107,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
-    let host = 'http://localhost:8000/';
+    let port = window.location.port;
+    let protocol = window.location.protocol;
+    let host = protocol+"//"+window.location.hostname;
+    if(port != 80 && port != 443){
+        host = host+":"+port;
+    }
     function upload(){
         let file = $('#upload_file')[0].files;
         if(file.length === 0){
@@ -117,7 +122,7 @@
         let formData = new FormData();
         formData.append('file', file[0]);
         $.ajax({
-            url: host+"settings/upload",
+            url: host+"/abis/settings/upload",
             data: formData,
             type: "POST",
             processData: false,
@@ -135,7 +140,7 @@
 
     function get_settings(){
         $.ajax({
-            url: host+"settings/current",
+            url: host+"/abis/settings/current",
             type: "GET",
             success: function(body){
                 if(body.status){

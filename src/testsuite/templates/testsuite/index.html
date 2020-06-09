@@ -139,14 +139,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
-    let host = 'http://localhost:8000/';
+    let port = window.location.port;
+    let protocol = window.location.protocol;
+    let host = protocol+"//"+window.location.hostname;
+    if(port != 80 && port != 443){
+        host = host+":"+port;
+    }
+    console.log("host: "+host+", port: "+port+", protocol: "+protocol);
     let timer = null;
     let run_name = null;
     function startRun(){
         run_name = $('#runName').val();
         let run_type = $('#runType').val();
         $.ajax({
-            url: host+"test/run",
+            url: host+"/abis/test/run",
             type: "POST",
             data: {'run_name': run_name, 'run_type': run_type},
             success: function(body){
@@ -162,7 +168,7 @@
 
     function cancelRun(){
         $.ajax({
-            url: host+"test/cancel",
+            url: host+"/abis/test/cancel",
             type: "POST",
             success: function(body){
                 if(body.status){
@@ -176,7 +182,7 @@
 
     function getStatus(){
         $.ajax({
-            url: host+"test/status",
+            url: host+"/abis/test/status",
             type: "POST",
             success: function(body){
                 if(body.status){
@@ -200,7 +206,7 @@
     }
 
     function openTest(){
-        window.open(host+'test/info/'+run_name)
+        window.open(host+'/abis/test/info/'+run_name)
     }
 
     function changeState(v){

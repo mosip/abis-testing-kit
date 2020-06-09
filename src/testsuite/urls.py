@@ -20,20 +20,20 @@ from .views import index, StartRun, CancelRun, get_cbeff, settings, testdata, Ru
 
 urlpatterns = [
     path('', index),
-    path('cbeff/<str:reference_id>', get_cbeff),
+    path('abis/cbeff/<str:reference_id>', get_cbeff),
 
-    re_path(r'^test/run\W?$', StartRun.as_view()),
-    re_path(r'^test/cancel\W?$', CancelRun.as_view()),
-    re_path(r'^test/status\W?$', RunStatus.as_view()),
-    path('test/info/<str:run_id>', StartRun.as_view()),
+    re_path(r'^abis/test/run\W?$', StartRun.as_view()),
+    re_path(r'^abis/test/cancel\W?$', CancelRun.as_view()),
+    re_path(r'^abis/test/status\W?$', RunStatus.as_view()),
+    path('abis/test/info/<str:run_id>', StartRun.as_view()),
 
-    re_path(r'^settings\W?$', settings),
-    re_path(r'^settings/current\W?$', get_current_config),
-    re_path(r'^settings/sample\W?$', get_sample_settings),
-    re_path(r'^settings/upload\W?$', UploadOverrideSettings.as_view()),
+    re_path(r'^abis/settings\W?$', settings),
+    re_path(r'^abis/settings/current\W?$', get_current_config),
+    re_path(r'^abis/settings/sample\W?$', get_sample_settings),
+    re_path(r'^abis/settings/upload\W?$', UploadOverrideSettings.as_view()),
 
-    re_path(r'^testdata\W?$', testdata),
-    re_path(r'^testdata/current\W?$', get_current_testdata),
-    re_path(r'^testdata/sample\W?$', get_sample_testdata),
-    re_path(r'^testdata/upload\W?$', UploadTestData.as_view())
+    re_path(r'^abis/testdata\W?$', testdata),
+    re_path(r'^abis/testdata/current\W?$', get_current_testdata),
+    re_path(r'^abis/testdata/sample\W?$', get_sample_testdata),
+    re_path(r'^abis/testdata/upload\W?$', UploadTestData.as_view())
 ]

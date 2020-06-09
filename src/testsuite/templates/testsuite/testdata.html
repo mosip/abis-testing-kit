@@ -78,8 +78,8 @@
         <div class="row pt-2 pb-2 d-flex align-content-center flex-column">
             <div class="card w-50 mb-5">
                 <div class="card-body">
-                    <button type="button" class="btn btn-info md m-auto" onclick="window.location.href='/testdata/current'">Current testdata</button>
-                    <button type="button" class="btn btn-secondary md m-auto" onclick="window.location.href='/testdata/sample'">Sample testdata</button>
+                    <button type="button" class="btn btn-info md m-auto" onclick="window.location.href='/abis/testdata/current'">Current testdata</button>
+                    <button type="button" class="btn btn-secondary md m-auto" onclick="window.location.href='/abis/testdata/sample'">Sample testdata</button>
                 </div>
             </div>
             <div class="card w-50">
@@ -104,7 +104,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
-    let host = 'http://localhost:8000/';
+    let port = window.location.port;
+    let protocol = window.location.protocol;
+    let host = protocol+"//"+window.location.hostname;
+    if(port != 80 && port != 443){
+        host = host+":"+port;
+    }
     function upload(){
         let file = $('#upload_zip')[0].files;
         if(file.length === 0){
@@ -114,7 +119,7 @@
         let formData = new FormData();
         formData.append('file', file[0]);
         $.ajax({
-            url: host+"testdata/upload",
+            url: host+"/abis/testdata/upload",
             data: formData,
             type: "POST",
             processData: false,

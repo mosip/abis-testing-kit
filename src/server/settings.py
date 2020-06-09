@@ -29,7 +29,7 @@ SECRET_KEY = '=gm3837$5hc)pgfd*0^me+9kb=*wrn#(#%9yhepa@eq3581vbp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
