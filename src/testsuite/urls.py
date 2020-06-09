@@ -35,5 +35,6 @@ urlpatterns = [
     re_path(r'^abis/testdata\W?$', testdata),
     re_path(r'^abis/testdata/current\W?$', get_current_testdata),
     re_path(r'^abis/testdata/sample\W?$', get_sample_testdata),
-    re_path(r'^abis/testdata/upload\W?$', UploadTestData.as_view())
+    re_path(r'^abis/testdata/upload\W?$', UploadTestData.as_view()),
+    re_path(r'^.*/$', index),
 ]
