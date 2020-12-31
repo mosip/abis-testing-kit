@@ -14,6 +14,8 @@ import os
 import sys
 from pathlib import Path
 
+from testsuite.utils import init_logger
+
 print(sys.path)
 # sys.path.append(os.path.abspath(os.path.join('..')))
 

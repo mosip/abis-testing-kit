@@ -3,6 +3,7 @@ from config.settings_override import queue_config
 from testsuite.models import RequestMap, Tests, Logs
 from orchestrator.orchestration import Orchestrator
 from orchestrator.queue_methods import consume
+from testsuite.utils import myprint
 
 
 def get_response_from_queue():
@@ -23,6 +24,8 @@ def get_response_from_queue():
         else:
             return None
     except Exception as e:
+        formatted_lines = traceback.format_exc()
+        myprint(formatted_lines, 13)
         print("OS error: {0}".format(e))
         return False
 
@@ -41,8 +44,8 @@ def run_orchestrator():
         else:
             return None
     except Exception as e:
+        formatted_lines = traceback.format_exc()
+        myprint(formatted_lines, 13)
         Tests.objects.filter(run_id=run_id).update(status='error', msg='e')
         Logs(run_id=run_id, log="Error occured: "+str(e)).save()
-        print(e)
-        print(traceback.print_tb(e.__traceback__))
         return False
