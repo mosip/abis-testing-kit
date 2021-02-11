@@ -33,3 +33,5 @@ class AppConfig:
     abis_response_timeout = os.getenv("atk.app.abis_response_timeout")
     abis_threshold = os.getenv("atk.app.abis_threshold")
 
+    public_key_file = os.getenv("atk.public_key_file")
+

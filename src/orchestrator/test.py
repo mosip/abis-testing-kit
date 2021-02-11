@@ -1,4 +1,8 @@
+import base64
+import pprint
 import unittest
+
+from orchestrator.encryption import Encryption
 
 
 class MyTestCase(unittest.TestCase):
@@ -55,6 +59,32 @@ class MyTestCase(unittest.TestCase):
         }
         data = validate_insert_response(ins)
         print(data)
+
+    def test_aes_encrypt_decrypt(self):
+        data = 'test12131'
+        e = Encryption()
+        print(data)
+        iv, ciphertext, tag = e.encrypt_data_aes(data)
+        print("iv: " + pprint.pformat(iv))
+        print("Encrypted: "+pprint.pformat(ciphertext))
+        print("B64: " + pprint.pformat(base64.b64encode(ciphertext).decode('utf-8')))
+        print("tag: " + pprint.pformat(tag))
+        # print("Key: " + pprint.pformat(e.encoded_secret_key))
+        # print("Key: "+pprint.pformat(e.encoded_secret_key.decode('utf-8')))
+        # print("Key: ")
+        # print(base64.b64decode(e.encoded_secret_key.decode('utf-8')))
+        # decrypted = e.decrypt_data_aes(encrypted)
+        # print("Decrypted: " + decrypted)
+
+    def test_rsa_encrypt_decrypt(self):
+        data = 'test12131'
+        e = Encryption()
+        print(data)
+        encrypted = e.encrypt_data_rsa(data)
+        print("Encrypted: "+pprint.pformat(encrypted))
+        pvt_key = e.read_private_key()
+        decrypted = e.decrypt_data_rsa(encrypted, pvt_key)
+        print("Decrypted: " + pprint.pformat(decrypted))
 
 
 if __name__ == '__main__':

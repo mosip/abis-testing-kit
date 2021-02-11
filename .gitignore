@@ -10,3 +10,8 @@
 /src/orchestrator/temp_data/*
 /src/job_data/*
 /tmp
+/src/config/certificates/id_rsa*
+/src/config/certificates/public.pub
+/src/config/certificates/public_key.pub
+/src/config/certificates/public_key.pem
+/pid.txt
