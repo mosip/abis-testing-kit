@@ -67,8 +67,10 @@ class MyTestCase(unittest.TestCase):
         iv, ciphertext, tag = e.encrypt_data_aes(data)
         print("iv: " + pprint.pformat(iv))
         print("Encrypted: "+pprint.pformat(ciphertext))
-        print("B64: " + pprint.pformat(base64.b64encode(ciphertext).decode('utf-8')))
         print("tag: " + pprint.pformat(tag))
+        print("B64 key: " + pprint.pformat(base64.b64encode(e.aes_key).decode('utf-8')))
+        print("B64 iv: " + pprint.pformat(base64.b64encode(iv).decode('utf-8')))
+        print("B64 data: " + pprint.pformat(base64.b64encode(ciphertext).decode('utf-8')))
         # print("Key: " + pprint.pformat(e.encoded_secret_key))
         # print("Key: "+pprint.pformat(e.encoded_secret_key.decode('utf-8')))
         # print("Key: ")
@@ -76,15 +78,24 @@ class MyTestCase(unittest.TestCase):
         # decrypted = e.decrypt_data_aes(encrypted)
         # print("Decrypted: " + decrypted)
 
-    def test_rsa_encrypt_decrypt(self):
+    def test_read_public_key(self):
+        data = 'test12131'
+        e = Encryption()
+        print(e.public_key)
+
+    def test_rsa_encrypt(self):
         data = 'test12131'
         e = Encryption()
         print(data)
         encrypted = e.encrypt_data_rsa(data)
         print("Encrypted: "+pprint.pformat(encrypted))
-        pvt_key = e.read_private_key()
-        decrypted = e.decrypt_data_rsa(encrypted, pvt_key)
+        print("B64 key: " + pprint.pformat(e.public_key.decode('utf-8')))
+        print("B64 data: " + pprint.pformat(base64.b64encode(encrypted).decode('utf-8')))
+        decrypted = e.decrypt_data_rsa(encrypted)
         print("Decrypted: " + pprint.pformat(decrypted))
+        print("B64 private key: " + pprint.pformat(e.private_key.decode('utf-8')))
+        print("B64 data: " + pprint.pformat(decrypted.decode('utf-8')))
+
 
 
 if __name__ == '__main__':
