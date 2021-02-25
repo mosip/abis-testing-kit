@@ -9,6 +9,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, FileRe
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.forms.models import model_to_dict
+
+from orchestrator.encryption import Encryption
 from orchestrator.orchestrator_methods import save_file, create_zip, extract_testdata, cleanTmp
 from config.settings_override import app_config, queue_config
 from .models import Tests, RequestMap, Logs
@@ -140,9 +142,11 @@ def get_cbeff(request, reference_id):
                     with open(abs_file_path, 'r') as f:
                         file_data = f.read()
 
+                    # encrypting data
+                    e = Encryption()
+                    data = e.encrypt_data_abis_with_specs(file_data)
                     # sending response
-                    response = HttpResponse(file_data, content_type='application/xml')
-                    response['Content-Disposition'] = 'attachment; filename="cbeff.xml"'
+                    response = HttpResponse(data)
                     return response
                 except IOError:
                     response = HttpResponseNotFound('<h1>File not exist</h1>')

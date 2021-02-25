@@ -12,5 +12,5 @@
 
 ### Create certificate
 * Go to config/certificates folder
-* Generate RSA keys: `ssh-keygen -t rsa -f ./id_rsa`
-* Convert SSH public key to PEM: `ssh-keygen -f id_rsa.pub -m 'PEM' -e > public_key.pem`
+* Generate certificates: `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt`
+* Get public key from certificate: `openssl x509 -in server.crt -pubkey -noout -outform pem`

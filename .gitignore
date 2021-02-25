@@ -15,3 +15,5 @@
 /src/config/certificates/public_key.pub
 /src/config/certificates/public_key.pem
 /pid.txt
+/src/config/certificates/server.key
+/src/config/certificates/server.pem
