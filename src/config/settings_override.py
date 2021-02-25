@@ -14,7 +14,7 @@ app = namedtuple('App', 'callback_url, abis_response_timeout, abis_threshold')
 
 def queue_config() -> queue:
     properties: Dict = {}
-    if os.path.isfile(abs_settings_path):
+    if os.path.exists(abs_settings_path) and os.path.isfile(abs_settings_path):
         with open(abs_settings_path, 'r') as file:
             properties: Dict = json.loads(file.read())
     q = queue(
@@ -30,7 +30,7 @@ def queue_config() -> queue:
 
 def app_config() -> app:
     properties: Dict = {}
-    if os.path.isfile(abs_settings_path):
+    if os.path.exists(abs_settings_path) and os.path.isfile(abs_settings_path):
         with open(abs_settings_path, 'r') as file:
             properties: Dict = json.loads(file.read())
     a = app(

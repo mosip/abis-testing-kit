@@ -24,11 +24,11 @@ P1=$!
 python3 orchestration_job.py &
 P2=$!
 
-python3 queue_listener_job.py &
-P3=$!
-
-python3 dummy_abis.py &
-P4=$!
+#python3 queue_listener_job.py &
+#P3=$!
+#
+#python3 dummy_abis.py &
+#P4=$!
 
 PIDs=$(list_descendants $$)
 
@@ -49,16 +49,16 @@ while sleep 15; do
       echo "orchestration_job failed"
       kill "$PIDs" "$$"
   fi
-  if ps -p $P3 >/dev/null; then
-      echo $P3": queue_listener_job active"
-  else
-      echo "queue_listener_job failed"
-      kill "$PIDs" "$$"
-  fi
-  if ps -p $P4 >/dev/null; then
-      echo $P4": dummy_abis active"
-  else
-      echo "dummy_abis failed"
-      kill "$PIDs" "$$"
-  fi
+#  if ps -p $P3 >/dev/null; then
+#      echo $P3": queue_listener_job active"
+#  else
+#      echo "queue_listener_job failed"
+#      kill "$PIDs" "$$"
+#  fi
+#  if ps -p $P4 >/dev/null; then
+#      echo $P4": dummy_abis active"
+#  else
+#      echo "dummy_abis failed"
+#      kill "$PIDs" "$$"
+#  fi
 done

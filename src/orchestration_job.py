@@ -3,10 +3,18 @@ import time
 import sys
 import django
 
+from testsuite.utils import init_logger
+
 print(sys.path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 django.setup()
 from server.tasks import run_orchestrator
+
+abs_log_path = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'logs')
+)
+
+init_logger(os.path.join(abs_log_path, 'debug.log'))
 
 
 def run_job():

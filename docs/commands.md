@@ -9,3 +9,8 @@
 * Go inside container: sudo docker exec -it abis-testing-app bash
 * remove all containers: sudo docker rm -f $(sudo docker ps -a -q)
 * run django inside container: python3 manage.py runserver 0.0.0.0:8000 --noreload
+
+### Create certificate
+* Go to config/certificates folder
+* Generate certificates: `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt`
+* Get public key from certificate: `openssl x509 -in server.crt -pubkey -noout -outform pem`
