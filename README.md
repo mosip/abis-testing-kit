@@ -6,8 +6,8 @@ Provides a test framework for testing ABIS
 * docker > 19.x.x; docker -v
 
 **Setup**
-* add public key (.pem, .pub) to REPO_ROOT/src/config/certificates folder
-* create a .env file in the repository root using the .evn.example file.
+* add public key (.pem) to REPO_ROOT/src/config/certificates folder
+* create a .env file in the repository root using the .env.example file.
 * update the .env with your properties.
 * add your data in REPO_ROOT/sample_data including test_cases.json, test_data.json, respective cbeff files. Default files have already been added if you just want to try.
 * go to REPO_ROOT/scripts folder.
@@ -15,7 +15,7 @@ Provides a test framework for testing ABIS
 * open `localhost:8000` to view the UI
 * for rollback, use "python3 script.py rollback".
 
-**Dummy ABIS**
+**Dummy ABIS (Optional, just for testing testing kit)**
 * go to REPO_ROOT/src
 * run "python3 dummy_abis.py"; it will start a dummy abis to analyse the request and return responses in queues. 
 

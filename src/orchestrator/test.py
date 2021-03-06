@@ -68,9 +68,9 @@ class MyTestCase(unittest.TestCase):
         print("iv: " + pprint.pformat(iv))
         print("Encrypted: "+pprint.pformat(ciphertext))
         print("tag: " + pprint.pformat(tag))
-        print("B64 key: " + pprint.pformat(base64.b64encode(e.aes_key).decode('utf-8')))
-        print("B64 iv: " + pprint.pformat(base64.b64encode(iv).decode('utf-8')))
-        print("B64 data: " + pprint.pformat(base64.b64encode(ciphertext).decode('utf-8')))
+        print("B64 key: " + pprint.pformat(base64.urlsafe_b64encode(e.aes_key).decode('utf-8')))
+        print("B64 iv: " + pprint.pformat(base64.urlsafe_b64encode(iv).decode('utf-8')))
+        print("B64 data: " + pprint.pformat(base64.urlsafe_b64encode(ciphertext).decode('utf-8')))
 
     def test_read_public_key(self):
         data = 'test12131'

@@ -27,7 +27,7 @@ class Encryption:
         self.private_key = None
         self.key_splitter = key_splitter or '#KEY_SPLITTER#'
         self.read_public_key()
-        self.read_private_key()
+        # self.read_private_key()
         self.aes_key = os.urandom(32)
         # self.aes_key = b'\xef"1\x97\xbd\x95a\x87\xcb2\x99V\x13\xdb\x82\xb3\xbd\xdd\xfb:o\xc3D\xfd\xd7G\xea\xdd\xe2
         # \xc6\xbe\x9d'
@@ -40,14 +40,14 @@ class Encryption:
         encrypted_aes_key, mod, exp = self.encrypt_data_rsa_bytes(self.aes_key)
         key_splitter_bytes = bytes(self.key_splitter, 'utf-8')
         final_response = b''.join([encrypted_aes_key, key_splitter_bytes, iv, ciphertext])
-        myPrint("encrypt iv: " + base64.b64encode(iv).decode('utf-8'))
-        myPrint("encrypt ciphertext: " + base64.b64encode(ciphertext).decode('utf-8'))
-        myPrint("encrypt aes_key: " + base64.b64encode(self.aes_key).decode('utf-8'))
-        myPrint("encrypt encrypted_aes_key: " + base64.b64encode(encrypted_aes_key).decode('utf-8'))
+        myPrint("encrypt iv: " + base64.urlsafe_b64encode(iv).decode('utf-8'))
+        myPrint("encrypt ciphertext: " + base64.urlsafe_b64encode(ciphertext).decode('utf-8'))
+        myPrint("encrypt aes_key: " + base64.urlsafe_b64encode(self.aes_key).decode('utf-8'))
+        myPrint("encrypt encrypted_aes_key: " + base64.urlsafe_b64encode(encrypted_aes_key).decode('utf-8'))
         myPrint("encrypt rsa_public_key: " + self.public_key.decode('utf-8'))
         myPrint("encrypt rsa_mod: " + str(mod))
         myPrint("encrypt rsa_exp: " + str(exp))
-        return base64.b64encode(final_response), mod
+        return base64.urlsafe_b64encode(final_response), mod
 
     def decrypt_data_abis_with_specs(self, data: str, rsa_mod: int = None):
         if rsa_mod is None or rsa_mod == self.getPrivateKeyMod():
@@ -87,15 +87,15 @@ class Encryption:
             with open(key_file_path, "rb") as key_file:
                 if file_extension == ".pem":
                     self.public_key = RSA.importKey(key_file.read()).exportKey(format='PEM', passphrase=None, pkcs=1)
-                elif file_extension == ".pub":
-                    self.public_key = RSA.importKey(key_file.read()).exportKey(format='PEM', passphrase=None, pkcs=1)
+                # elif file_extension == ".pub":
+                #     self.public_key = RSA.importKey(key_file.read()).exportKey(format='PEM', passphrase=None, pkcs=1)
                 else:
                     raise RuntimeError("Public key file extension "+file_extension+" not supported")
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), key_file_path)
 
     def read_private_key(self):
-        key_file_path = os.path.join(certificate_folder_path, "server.key")
+        key_file_path = os.path.join(certificate_folder_path, "private.key")
         if os.path.exists(key_file_path):
             with open(key_file_path, "rb") as key_file:
                 self.private_key = RSA.importKey(key_file.read()).exportKey(format='PEM', passphrase=None, pkcs=1)
