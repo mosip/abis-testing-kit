@@ -17,3 +17,5 @@
 /pid.txt
 /src/config/certificates/server.key
 /src/config/certificates/server.pem
+/.idea/
+*.iml
