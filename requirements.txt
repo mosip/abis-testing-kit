@@ -10,7 +10,7 @@ coreschema==0.0.4
 Django==3.0.4
 django-compat==1.0.15
 django-cors-headers==3.2.1
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 docopt==0.6.2
 drf-yasg==1.17.1
 idna==2.9
