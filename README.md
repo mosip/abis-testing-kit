@@ -7,7 +7,20 @@ Provides a test framework for testing ABIS
 
 ## Setup
 
-### Direct setup
+### Generate RSA certificate
+Go to REPO_ROOT/src/config/certificates folder
+
+Run below commands in sequence:
+* openssl genrsa -out root.key 2048
+* openssl req -new -x509 -days 1826 -extensions v3_ca -key root.key -out root.crt -subj "/CN=A1/OU=A1/O=A1/L=BLR/ST=KAR/C=IN"
+* openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in root.key -out root.key.pkcs8
+
+Above commands will create a root.crt, root.key, root.key.pkcs8 files in certificates folder
+* root.crt will be used for encryption
+* root.key or root.key.pkcs8 can be used for decryption
+
+
+### Run directly
 * add public key (.pem) to REPO_ROOT/src/config/certificates folder
 * create a .env file in the repository root using the .env.example file.
 * update the .env with your properties.
@@ -18,7 +31,7 @@ Provides a test framework for testing ABIS
 * Go to REPO_ROOT/src and run `python3 manage.py runserver`
 * open `localhost:8000` to view the UI
 
-### Via docker
+### Run via docker
 * add public key (.pem) to REPO_ROOT/src/config/certificates folder
 * create a .env file in the repository root using the .env.example file.
 * update the .env with your properties.
@@ -27,18 +40,6 @@ Provides a test framework for testing ABIS
 * run "python3 script.py setup"; this will create a docker image and run it.
 * open `localhost:8000` to view the UI
 * for rollback, use "python3 script.py rollback".
-
-### Generate RSA certificate
-Go to src/config/certificates folder
-
-Run below commands in sequence:
-* openssl genrsa -out root.key 2048
-* openssl req -new -x509 -days 1826 -extensions v3_ca -key root.key -out root.crt -subj "/CN=A1/OU=A1/O=A1/L=BLR/ST=KAR/C=IN"
-* openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in root.key -out root.key.pkcs8
-
-Above commands will create a root.crt, root.key, root.key.pkcs8 files in certificates folder
-* root.crt will be used for encryption
-* root.key or root.key.pkcs8 can be used for decryption
 
 ### Dummy ABIS (Optional, just for testing the test-kit)
 * Go to REPO_ROOT/src
