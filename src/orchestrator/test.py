@@ -1,7 +1,7 @@
 import base64
 import pprint
 import unittest
-
+from orchestrator.decryption import Decryption
 from orchestrator.encryption import Encryption
 
 
@@ -68,9 +68,9 @@ class MyTestCase(unittest.TestCase):
         print("iv: " + pprint.pformat(iv))
         print("Encrypted: "+pprint.pformat(ciphertext))
         print("tag: " + pprint.pformat(tag))
-        print("B64 key: " + pprint.pformat(base64.b64encode(e.aes_key).decode('utf-8')))
-        print("B64 iv: " + pprint.pformat(base64.b64encode(iv).decode('utf-8')))
-        print("B64 data: " + pprint.pformat(base64.b64encode(ciphertext).decode('utf-8')))
+        print("B64 key: " + pprint.pformat(base64.urlsafe_b64encode(e.aes_key).decode('utf-8')))
+        print("B64 iv: " + pprint.pformat(base64.urlsafe_b64encode(iv).decode('utf-8')))
+        print("B64 data: " + pprint.pformat(base64.urlsafe_b64encode(ciphertext).decode('utf-8')))
 
     def test_read_public_key(self):
         data = 'test12131'
@@ -104,8 +104,9 @@ class MyTestCase(unittest.TestCase):
     def test_encrypt_data_abis_with_specs(self):
         data = 'test12131'
         e = Encryption()
-        data, mod = e.encrypt_data_abis_with_specs(data)
-        e.decrypt_data_abis_with_specs(data, mod)
+        data, mod = e.encrypt_data_abis_with_0_9_specs(data)
+        d = Decryption()
+        d.decrypt_data_abis_with_0_9_specs(data, mod)
 
     def test_match_mods(self):
         e = Encryption()

@@ -12,5 +12,36 @@
 
 ### Create certificate
 * Go to config/certificates folder
-* Generate certificates: `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt`
-* Get public key from certificate: `openssl x509 -in server.crt -pubkey -noout -outform pem`
+* Create keystore:
+Assuming password is password, alias is cbeff, keystore name is cbeff.p12
+```text
+keytool -genkey -alias cbeff \
+    -keystore cbeff.p12 \
+    -storetype PKCS12 \
+    -keyalg RSA \
+    -storepass password \
+    -keysize 2048 \
+    -dname "CN=Mark Smith, OU=JavaSoft, O=Sun, L=Cupertino, S=California, C=US"
+```
+* Export public key from keystore: `openssl pkcs12 -in cbeff.p12 -nokeys -out pub.pem -password pass:password`
+```text
+Remove additional data from pub.pem like:
+Bag Attributes
+    friendlyName: cbeff
+    localKeyID: 54 69 6D 65 20 31 36 31 35 30 30 38 34 37 37 30 36 39 
+subject=C = US, ST = California, L = Cupertino, O = Sun, OU = JavaSoft, CN = Mark Smith
+
+issuer=C = US, ST = California, L = Cupertino, O = Sun, OU = JavaSoft, CN = Mark Smith
+
+Keep only 
+-----BEGIN CERTIFICATE-----
+xxxxxxxx
+-----END CERTIFICATE-----
+```
+
+* Export private key from keystore: `openssl pkcs12 -in cbeff.p12 -nodes -nocerts -out private.key -password pass:password`
+
+## Generate RSA
+openssl genrsa -out root.key 2048
+openssl req -new -x509 -days 1826 -extensions v3_ca -key root.key -out root.crt -subj "/CN=A1/OU=A1/O=A1/L=BLR/ST=KAR/C=IN"
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in root.key -out root.key.pkcs8

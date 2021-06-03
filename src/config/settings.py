@@ -34,4 +34,5 @@ class AppConfig:
     abis_threshold = os.getenv("atk.app.abis_threshold")
 
     public_key_file = os.getenv("atk.public_key_file")
+    asymmetric_encryption_type = os.getenv("atk.asymmetric_encryption_type")
 
