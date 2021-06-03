@@ -40,3 +40,8 @@ xxxxxxxx
 ```
 
 * Export private key from keystore: `openssl pkcs12 -in cbeff.p12 -nodes -nocerts -out private.key -password pass:password`
+
+## Generate RSA
+openssl genrsa -out root.key 2048
+openssl req -new -x509 -days 1826 -extensions v3_ca -key root.key -out root.crt -subj "/CN=A1/OU=A1/O=A1/L=BLR/ST=KAR/C=IN"
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in root.key -out root.key.pkcs8

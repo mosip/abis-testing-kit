@@ -1,7 +1,7 @@
 import base64
 import pprint
 import unittest
-
+from orchestrator.decryption import Decryption
 from orchestrator.encryption import Encryption
 
 
@@ -104,8 +104,9 @@ class MyTestCase(unittest.TestCase):
     def test_encrypt_data_abis_with_specs(self):
         data = 'test12131'
         e = Encryption()
-        data, mod = e.encrypt_data_abis_with_specs(data)
-        e.decrypt_data_abis_with_specs(data, mod)
+        data, mod = e.encrypt_data_abis_with_0_9_specs(data)
+        d = Decryption()
+        d.decrypt_data_abis_with_0_9_specs(data, mod)
 
     def test_match_mods(self):
         e = Encryption()

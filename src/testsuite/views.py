@@ -144,7 +144,7 @@ def get_cbeff(request, reference_id):
 
                     # encrypting data
                     e = Encryption()
-                    data = e.encrypt_data_abis_with_specs(file_data)
+                    data = e.encrypt_data_abis_with_0_9_specs(file_data)
                     # sending response
                     response = HttpResponse(data)
                     return response
