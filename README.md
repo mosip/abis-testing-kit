@@ -17,7 +17,6 @@ Provides a test framework for testing ABIS
 * Go to REPO_ROOT/src and run `python3 manage.py migrate`
 * Go to REPO_ROOT/src and run `python3 manage.py runserver`
 * open `localhost:8000` to view the UI
-* for rollback, use "python3 script.py rollback".
 
 ### Via docker
 * add public key (.pem) to REPO_ROOT/src/config/certificates folder
