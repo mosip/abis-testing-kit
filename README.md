@@ -26,9 +26,13 @@ Above commands will create a root.crt, root.key, root.key.pkcs8 files in certifi
 * update the .env with your properties.
 * add your data in REPO_ROOT/sample_data including test_cases.json, test_data.json, respective cbeff files. Default files have already been added if you just want to try.
 * Copy files inside REPO_ROOT/sample_data to REPO_ROOT/src/store
-* Go to REPO_ROOT and run `pip3 install -r requirements.txt`
-* Go to REPO_ROOT/src and run `python3 manage.py migrate`
-* Go to REPO_ROOT/src and run `python3 manage.py runserver`
+* Create python3 virtual environment, go to REPO_ROOT and run: `python3 -m venv venv`
+* Activate virtual environment: `source venv/bin/activate`
+* Go to REPO_ROOT and run `pip install -r requirements.txt`
+* Go to REPO_ROOT/src and run `python manage.py migrate`
+* Go to REPO_ROOT/src and run `python manage.py runserver`
+* Go to REPO_ROOT/src and run `python orchestration_job.py`
+* Go to REPO_ROOT/src and run `python queue_listener_job.py`
 * open `localhost:8000` to view the UI
 
 ### Run via docker

@@ -2,6 +2,7 @@ import base64
 import errno
 import logging
 import os
+import re
 
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
@@ -38,8 +39,9 @@ class Encryption:
         final_response = b''.join([bytes("VER_R2", 'utf-8'), bytes.fromhex(thumbprint), encrypted_aes_key, key_splitter_bytes, self.random, iv, ciphertext])
         myPrint("encrypt AAD: " + base64.urlsafe_b64encode(self.random).decode('utf-8'))
         myPrint("encrypt iv: " + base64.urlsafe_b64encode(iv).decode('utf-8'))
-        myPrint("encrypt ciphertext: " + base64.urlsafe_b64encode(ciphertext).decode('utf-8'))
+        # myPrint("encrypt ciphertext: " + base64.urlsafe_b64encode(ciphertext).decode('utf-8'))
         myPrint("encrypt aes_key: " + base64.urlsafe_b64encode(self.aes_key).decode('utf-8'))
+        myPrint("encrypt hex aes_key: " + self.aes_key.hex())
         myPrint("encrypt encrypted_aes_key length: " + str(len(encrypted_aes_key)))
         myPrint("encrypt encrypted_aes_key: " + str(encrypted_aes_key))
         myPrint("encrypt encrypted_aes_key: " + base64.urlsafe_b64encode(encrypted_aes_key).decode('utf-8'))
@@ -48,7 +50,7 @@ class Encryption:
         myPrint("encrypt thumbprint: " + thumbprint)
         myPrint("encrypt rsa_mod: " + str(mod))
         myPrint("encrypt rsa_exp: " + str(exp))
-        return base64.urlsafe_b64encode(final_response), mod
+        return base64.b64encode(final_response), mod
 
     def encrypt_data_aes(self, data: bytes, iv: bytes, aad: bytes):
         # Construct an AES-GCM Cipher object with the given key and a
@@ -88,6 +90,8 @@ class Encryption:
 
     def getPublicCertificateThumbprint(self):
         key = RSA.importKey(self.public_key)
+        stripped = re.sub(r'-----(BEGIN|END) PUBLIC KEY-----', '', key.exportKey().decode('utf-8'))
+        myPrint("getPublicCertificateThumbprint: " + stripped)
         h = SHA256.new()
-        h.update(key.exportKey())
+        h.update(base64.urlsafe_b64decode(stripped))
         return h.hexdigest()

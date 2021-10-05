@@ -16,11 +16,11 @@
       <BDBInfo>
          <Format>
             <Organization>Mosip</Organization>
-            <Type>257</Type>
+            <Type>7</Type>
          </Format>
          <CreationDate>2020-03-16 12:18:01.261600</CreationDate>
-         <Type>IRIS</Type>
-         <Subtype>Right Eye</Subtype>
+         <Type>Finger</Type>
+         <Subtype>Right IndexFinger</Subtype>
          <Level>Raw</Level>
          <Purpose>Enroll</Purpose>
          <Quality>
