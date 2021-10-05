@@ -143,8 +143,11 @@ def get_cbeff(request, reference_id):
                         file_data = f.read()
 
                     # encrypting data
-                    e = Encryption()
-                    data = e.encrypt_data_abis_with_0_9_specs(file_data)
+                    if os.getenv("atk.encryption") == 'y':
+                        e = Encryption()
+                        data = e.encrypt_data_abis_with_0_9_specs(file_data)
+                    else:
+                        data = file_data
                     # sending response
                     response = HttpResponse(data)
                     return response

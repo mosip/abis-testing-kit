@@ -1,4 +1,4 @@
-## Helpul commands
+## Helpful commands
 
 **Commands**
 * To create a virtual environment: python3 -m venv venv
@@ -40,6 +40,8 @@ xxxxxxxx
 ```
 
 * Export private key from keystore: `openssl pkcs12 -in cbeff.p12 -nodes -nocerts -out private.key -password pass:password`
+
+* keytool -keystore cbeff.p12 -storetype pkcs12 -exportcert -file pub.crt -rfc -alias cbeff
 
 ## Generate RSA
 openssl genrsa -out root.key 2048

@@ -6,7 +6,8 @@
 *.sqlite3
 /venv
 /src/store/*
-/src/result/
+/src/result/*
+!/src/result/.gitkeep
 /src/orchestrator/temp_data/*
 /src/job_data/*
 /tmp
